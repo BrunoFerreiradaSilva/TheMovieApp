@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_movie">Filmes</string>
+    <string name="title_search">Pesquisar</string>
+    <string name="title_profile">Perfil</string>
+    <string name="bem_vindo">Bem vindo</string>
+    <string name="key">Key</string>
+    <string name="digite_sua_key">Digite sua key</string>
+    <string name="entrar">entrar</string>
+    <string name="see_more">ver mais</string>
+    <string name="poster_movie_popular">poster movie popular</string>
+    <string name="popular">Popular</string>
+    <string name="descricao">Descrição</string>
+    <string name="title_activity_menu_movie">MenuMovieActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="pesquisa">Pesquisa</string>
+    <string name="movie">Movie</string>
+    <string name="cadastre_se">cadastre-se</string>
+    <string name="perfil">Perfil</string>
+    <string name="image_profile">image profile</string>
+    <string name="filme">Filme</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="close_search">X</string>
+    <string name="nome_do_filme">Nome do filme</string>
+    <string name="favoritar">Favoritar</string>
+    <string name="popularity">Popularity:</string>
+    <string name="image_people_selected">Image people selected</string>
+    <string name="place_of_birth">Place of birth:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="the_movies">The Movies</string>
+    <string name="image_wifi_off">Image wifi off</string>
+    <string name="retry">retry</string>
+    <string name="image_header_similar_movie">Image header similar movie</string>
+    <string name="item_movie_popular_for_recyclerview">item movie popular for recyclerview</string>
+    <string name="image_item_for_movie_similar">image item for movie similar</string>
+</resources>
