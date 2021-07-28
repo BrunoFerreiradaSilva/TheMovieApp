@@ -14,9 +14,9 @@ import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieapp.ui.moviedetails.MovieDetailsViewModel
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
-import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.PEOPLE_ID
 import com.example.movieappferreira.base.Constants.PRIMARY_KEY
+import com.example.movieappferreira.extensions.loadUrl
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
@@ -24,7 +24,6 @@ import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieDetailsPopularBinding
-import com.squareup.picasso.Picasso
 
 class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
@@ -32,7 +31,6 @@ class MovieDetailsActivity : AppCompatActivity() {
     private var movieDetails = MovieDetails()
     private val listPeople = mutableListOf<People>()
     private var movieSimilar = 0
-    private val genreName: MutableList<String> = mutableListOf()
     private lateinit var skeletonScreen: SkeletonScreen
     private val movieDetailsAdapter: MovieDetailsAdapter by lazy {
         MovieDetailsAdapter(this, listPeople, getPeopleDetails())
@@ -76,13 +74,13 @@ class MovieDetailsActivity : AppCompatActivity() {
             if (ConnectionOn().isConnected(this)) {
                 movieDetailsViewModel.getMovieDetails(PRIMARY_KEY, movieSimilar)
                 movieDetailsViewModel.getPeopleMovie(PRIMARY_KEY, movieSimilar)
-                setupInformationScreen()
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 binding.titleDetailsMoviePopular.visibility = VISIBLE
                 skeletonScreen.show()
             }
         }
     }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.move_to_left, R.anim.fade_out)
@@ -107,15 +105,13 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun setupInformationScreen() {
         binding.apply {
-            Picasso.get().load(PATH_IMAGE + movieDetails.backdrop_path)
-                .into(imageDetailsMoviePopular)
-            titleDetailsMoviePopular.text = movieDetails.original_title
-            summaryDetails.text = movieDetails.overview
-            releaseDateMovieDetails.text = movieDetails.release_date.split("-")[0]
-            for (genre in 0 until movieDetails.genres.size) {
-                val genreType = movieDetails.genres[genre].name
-                genreName.addAll(listOf(genreType))
-                genreMovieDetails.text = genreName.toString().removePrefix("[").removeSuffix("]")
+            movieDetails.apply {
+                imageDetailsMoviePopular.loadUrl(backdrop_path)
+                titleDetailsMoviePopular.text = original_title
+                summaryDetails.text = overview
+                releaseDateMovieDetails.text = release_date.split("-")[0]
+                genreMovieDetails.text =
+                    genres.map { it.name }.toString().removePrefix("[").removeSuffix("]")
             }
         }
     }
@@ -125,10 +121,17 @@ class MovieDetailsActivity : AppCompatActivity() {
             override fun onItemMovieClicked(id: Int) {
                 val intent = Intent(this@MovieDetailsActivity, PeopleDetailsActivity::class.java)
                 intent.putExtra(PEOPLE_ID, id)
-                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(applicationContext, R.anim.fade_in, R.anim.move_to_right)
-                ActivityCompat.startActivity(this@MovieDetailsActivity, intent, activityOptionsCompat.toBundle())
+                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.fade_in,
+                    R.anim.move_to_right
+                )
+                ActivityCompat.startActivity(
+                    this@MovieDetailsActivity,
+                    intent,
+                    activityOptionsCompat.toBundle()
+                )
             }
-
         }
     }
 }
