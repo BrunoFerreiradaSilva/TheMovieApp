@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso
 
 class PeopleDetailsActivity : AppCompatActivity() {
     private lateinit var peopleViewModel: PeopleDetailsViewModel
-    private var peopleId = 0
     private lateinit var binding: ActivityPeopleDetailsBinding
     private lateinit var skeletonScreen: SkeletonScreen
 
@@ -28,7 +27,14 @@ class PeopleDetailsActivity : AppCompatActivity() {
 
         setSkeleton()
 
-        peopleId = intent.getIntExtra(Constants.PEOPLE_ID, 0)
+        val peopleId = intent.getIntExtra(Constants.PEOPLE_ID, 0)
+
+        peopleViewModel = ViewModelProvider(this).get(PeopleDetailsViewModel::class.java)
+        peopleViewModel.getPeopleDetails(peopleId)
+        peopleViewModel.peopleDetailsLiveData.observe(this, {
+            skeletonScreen.hide()
+            setupInformationOnScreen(it)
+        })
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -38,13 +44,6 @@ class PeopleDetailsActivity : AppCompatActivity() {
             binding.textPopularity.visibility = GONE
             skeletonScreen.hide()
         }
-
-        peopleViewModel = ViewModelProvider(this).get(PeopleDetailsViewModel::class.java)
-        peopleViewModel.getPeopleDetails(peopleId)
-        peopleViewModel.peopleDetailsLiveData.observe(this, {
-            skeletonScreen.hide()
-            setupInformationOnScreen(it)
-        })
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             peopleViewModel.getPeopleDetails(peopleId)

@@ -16,6 +16,7 @@ import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
 import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.moviedetails.MovieDetailsActivity
@@ -27,9 +28,9 @@ class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
     private lateinit var movieSimilarViewModel: MovieSimilarViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
-    private var movieId = 0
     private lateinit var skeletonScreen: SkeletonScreen
-    private val movieSimilarAdapter: MovieSimilarAdapter = MovieSimilarAdapter(movieSimilarList,this, onClickItemMovieSimilar())
+    private val movieSimilarAdapter: MovieSimilarAdapter =
+        MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,18 +40,11 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         setSkeleton()
 
-        movieId = intent.getIntExtra(ID_MOVIE, 0)
-
-        if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
-            skeletonScreen.hide()
-        }
-
-        setupAdapter()
+        val movieId = intent.getIntExtra(ID_MOVIE, 0)
 
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
         movieDetailsViewModel.getMovieDetails(movieId)
-        movieDetailsViewModel.detailsMovieLiveData.observe(this, {
+        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
             skeletonScreen.hide()
             if (it != null) {
                 movieSimilarAdapter.setMovie(it)
@@ -64,6 +58,11 @@ class MovieSimilarActivity : AppCompatActivity() {
             skeletonScreen.hide()
         })
 
+        if (!ConnectionOn().isConnected(this)) {
+            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
+            skeletonScreen.hide()
+        }
+
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
                 movieDetailsViewModel.getMovieDetails(movieId)
@@ -72,6 +71,7 @@ class MovieSimilarActivity : AppCompatActivity() {
                 skeletonScreen.show()
             }
         }
+        setupAdapter()
     }
 
     override fun finish() {
@@ -99,8 +99,16 @@ class MovieSimilarActivity : AppCompatActivity() {
             override fun onItemMovieClicked(id: Int) {
                 val intent = Intent(this@MovieSimilarActivity, MovieDetailsActivity::class.java)
                 intent.putExtra(ID_SIMILAR, id)
-                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(applicationContext, R.anim.fade_in, R.anim.move_to_right)
-                ActivityCompat.startActivity(this@MovieSimilarActivity, intent, activityOptionsCompat.toBundle())
+                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.fade_in,
+                    R.anim.move_to_right
+                )
+                ActivityCompat.startActivity(
+                    this@MovieSimilarActivity,
+                    intent,
+                    activityOptionsCompat.toBundle()
+                )
             }
         }
     }

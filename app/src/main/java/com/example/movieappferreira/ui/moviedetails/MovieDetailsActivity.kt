@@ -36,12 +36,23 @@ class MovieDetailsActivity : BaseActivity() {
         binding = ActivityMovieDetailsPopularBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var movieDetails: MovieDetails? = null
-
         setSkeleton()
 
         val movieSimilar = intent.getIntExtra(ID_SIMILAR, 0)
+
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel.getMovieDetails(movieSimilar)
+        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
+            skeletonScreen.hide()
+            if (it != null) {
+                setupInformationScreen(it)
+            }
+        })
+
+        movieDetailsViewModel.detailsMovieAndPeople.second.observe(this, {
+            skeletonScreen.hide()
+            movieDetailsAdapter.setData(it)
+        })
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -49,28 +60,14 @@ class MovieDetailsActivity : BaseActivity() {
             skeletonScreen.hide()
         }
 
-        setupAdapter()
-        movieDetailsViewModel.getMovieDetails(movieSimilar)
-        movieDetailsViewModel.detailsMovieLiveData.observe(this, {
-            skeletonScreen.hide()
-            if (it != null) {
-                setupInformationScreen(it)
-            }
-        })
-
-        movieDetailsViewModel.getPeopleMovieList(movieSimilar)
-        movieDetailsViewModel.peopleMovieLiveData.observe(this, {
-            skeletonScreen.hide()
-            movieDetailsAdapter.setData(it)
-        })
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
                 movieDetailsViewModel.getMovieDetails(movieSimilar)
-                movieDetailsViewModel.getPeopleMovieList(movieSimilar)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 binding.titleDetailsMoviePopular.visibility = VISIBLE
             }
         }
+        setupAdapter()
     }
 
     override fun finish() {
