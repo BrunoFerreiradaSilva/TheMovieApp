@@ -19,12 +19,12 @@ import com.squareup.picasso.Picasso
 
 class MovieSimilarAdapter(
     private var movieSimilar: MutableList<MovieSimilar> = mutableListOf(),
-    private var movieDetails: MovieDetails,
     private val context: Context,
     private val listener: MovieClickListener
 
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 ) {
+    lateinit var movieDetails: MovieDetails
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> {

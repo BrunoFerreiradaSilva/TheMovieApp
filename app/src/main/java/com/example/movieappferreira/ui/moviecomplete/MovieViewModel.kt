@@ -21,10 +21,10 @@ class MovieViewModel : ViewModel() {
         get() = _popularMovieLiveData
     private val _popularMovieLiveData = MutableLiveData<MutableList<MoviePopular>>()
 
-    fun getPopularMovies(apiKey: String, page: Int) {
+    fun getPopularMovies(page: Int) {
         CoroutineScope(Dispatchers.IO).launch(handler) {
             try {
-                val movieList = repository.getMoviePopular(apiKey, page)
+                val movieList = repository.getMoviePopular(page)
                 _popularMovieLiveData.postValue(movieList)
             } catch (t: Throwable) {
                 return@launch

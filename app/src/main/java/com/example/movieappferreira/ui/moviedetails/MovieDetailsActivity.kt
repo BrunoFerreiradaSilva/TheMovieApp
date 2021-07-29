@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -12,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieapp.ui.moviedetails.MovieDetailsViewModel
+import com.example.movieappferreira.base.BaseActivity
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
 import com.example.movieappferreira.base.Constants.PEOPLE_ID
-import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.extensions.loadUrl
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
@@ -25,23 +23,25 @@ import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieDetailsPopularBinding
 
-class MovieDetailsActivity : AppCompatActivity() {
+class MovieDetailsActivity : BaseActivity() {
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
     private lateinit var binding: ActivityMovieDetailsPopularBinding
-    private var movieDetails = MovieDetails()
     private val listPeople = mutableListOf<People>()
-    private var movieSimilar = 0
     private lateinit var skeletonScreen: SkeletonScreen
-    private val movieDetailsAdapter: MovieDetailsAdapter by lazy {
-        MovieDetailsAdapter(this, listPeople, getPeopleDetails())
-    }
+    private val movieDetailsAdapter: MovieDetailsAdapter = MovieDetailsAdapter(this, listPeople, getPeopleDetails())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieDetailsPopularBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var movieDetails: MovieDetails? = null
+
         setSkeleton()
+
+        val movieSimilar = intent.getIntExtra(ID_SIMILAR, 0)
+        movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -49,34 +49,26 @@ class MovieDetailsActivity : AppCompatActivity() {
             skeletonScreen.hide()
         }
 
-        movieSimilar = intent.getIntExtra(ID_SIMILAR, 0)
-
         setupAdapter()
-
-        movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.getMovieDetails(apiKey = PRIMARY_KEY, movieID = movieSimilar)
+        movieDetailsViewModel.getMovieDetails(movieSimilar)
         movieDetailsViewModel.detailsMovieLiveData.observe(this, {
             skeletonScreen.hide()
             if (it != null) {
-                movieDetails = it
-                setupInformationScreen()
+                setupInformationScreen(it)
             }
         })
 
-        movieDetailsViewModel.getPeopleMovie(PRIMARY_KEY, movieSimilar)
+        movieDetailsViewModel.getPeopleMovieList(movieSimilar)
         movieDetailsViewModel.peopleMovieLiveData.observe(this, {
             skeletonScreen.hide()
             movieDetailsAdapter.setData(it)
         })
-
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
-
             if (ConnectionOn().isConnected(this)) {
-                movieDetailsViewModel.getMovieDetails(PRIMARY_KEY, movieSimilar)
-                movieDetailsViewModel.getPeopleMovie(PRIMARY_KEY, movieSimilar)
+                movieDetailsViewModel.getMovieDetails(movieSimilar)
+                movieDetailsViewModel.getPeopleMovieList(movieSimilar)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 binding.titleDetailsMoviePopular.visibility = VISIBLE
-                skeletonScreen.show()
             }
         }
     }
@@ -103,7 +95,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupInformationScreen() {
+    private fun setupInformationScreen(movieDetails:MovieDetails) {
         binding.apply {
             movieDetails.apply {
                 imageDetailsMoviePopular.loadUrl(backdrop_path)

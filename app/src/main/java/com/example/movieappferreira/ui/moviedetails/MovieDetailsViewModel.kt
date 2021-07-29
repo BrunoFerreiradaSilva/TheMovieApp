@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.moviedetails
+package com.example.movieappferreira.ui.moviedetails
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -23,21 +23,21 @@ class MovieDetailsViewModel : ViewModel() {
         get() = _detailsMovieLiveData
     private val _detailsMovieLiveData = MutableLiveData<MovieDetails?>()
 
-    fun getMovieDetails(apiKey: String, movieID: Int) {
+    fun getMovieDetails(movieID: Int) {
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            val movieDetails = repository.getDetailsMovie(apiKey, movieID)
+            val movieDetails = repository.getDetailsMovie(movieID)
             _detailsMovieLiveData.postValue(movieDetails)
         }
     }
 
     val peopleMovieLiveData: LiveData<MutableList<People>>
-    get() = _peopleMovieLiveData
+        get() = _peopleMovieLiveData
     private val _peopleMovieLiveData = MutableLiveData<MutableList<People>>()
 
-    fun getPeopleMovie(apiKey: String,movieID: Int){
+    fun getPeopleMovieList(movieID: Int){
         CoroutineScope(Dispatchers.IO).launch(handler) {
             try{
-                val people = repository.getPeopleMovie(apiKey, movieID)
+                val people = repository.getPeopleMovieList(movieID)
                 _peopleMovieLiveData.postValue(people)
             }catch (t:Throwable){
                 return@launch
@@ -45,19 +45,5 @@ class MovieDetailsViewModel : ViewModel() {
 
         }
     }
-    val movieSimilarDetails: LiveData<MutableList<MovieSimilar>>
-        get() = _movieSimilarDetails
-    private val _movieSimilarDetails = MutableLiveData<MutableList<MovieSimilar>>()
 
-    fun getMovieSimilar(apiKey: String, movieID: Int) {
-        CoroutineScope(Dispatchers.IO).launch(handler) {
-            try {
-                val movieSimilarDetails = repository.getSimilarMovies(apiKey, movieID)
-                _movieSimilarDetails.postValue(movieSimilarDetails)
-            }catch (t:Throwable){
-                return@launch
-            }
-
-        }
-    }
 }

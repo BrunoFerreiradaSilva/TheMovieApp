@@ -8,41 +8,41 @@ import com.example.movieappferreira.rest.retrofit.RetrofitInitializer
 
 class MovieRepository {
 
-    suspend fun getMoviePopular(apiKey: String, page:Int): MutableList<MoviePopular>{
+    suspend fun getMoviePopular(page:Int): MutableList<MoviePopular>{
         return try{
-            RetrofitInitializer.movieService.getPopularMovie(page, apiKey).results
+            RetrofitInitializer.movieService.getPopularMovie(page).results
         }catch (e:RuntimeException){
             mutableListOf()
         }
     }
 
-    suspend fun getDetailsMovie(apiKey: String,movieID:Int): MovieDetails? {
+    suspend fun getDetailsMovie(movieID:Int): MovieDetails? {
         return try {
-            RetrofitInitializer.movieService.getMovieDetails(apiKey = apiKey, movieID = movieID)
+            RetrofitInitializer.movieService.getMovieDetails(movieID)
         }catch (e:RuntimeException){
             null
         }
     }
 
-    suspend fun getPeopleMovie(apiKey: String, movieID: Int): MutableList<People>{
+    suspend fun getPeopleMovieList(movieID: Int): MutableList<People>{
         return try {
-            RetrofitInitializer.movieService.getPeopleMovie(apiKey = apiKey,movieID = movieID).cast
+            RetrofitInitializer.movieService.getPeopleMovie(movieID).cast
         }catch (e:RuntimeException){
             mutableListOf()
         }
     }
 
-    suspend fun getPeopleDetails(apiKey: String, peopleID:Int): People?{
+    suspend fun getPeopleDetails(peopleID:Int): People?{
         return try {
-            RetrofitInitializer.movieService.getPeopleDetails(apiKey = apiKey, peopleId = peopleID)
+            RetrofitInitializer.movieService.getPeopleDetails(peopleID)
         }catch (e:RuntimeException){
             null
         }
     }
 
-    suspend fun getSimilarMovies(apiKey: String, movieID: Int): MutableList<MovieSimilar>{
+    suspend fun getSimilarMovies(movieID: Int): MutableList<MovieSimilar>{
         return try {
-            RetrofitInitializer.movieService.getSimilarMovies(apiKey = apiKey, movieID = movieID).results
+            RetrofitInitializer.movieService.getSimilarMovies(movieID).results
         }catch (e:RuntimeException){
             mutableListOf()
         }

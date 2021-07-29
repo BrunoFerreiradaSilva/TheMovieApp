@@ -11,12 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieapp.ui.moviedetails.MovieDetailsViewModel
+import com.example.movieappferreira.ui.moviedetails.MovieDetailsViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
 import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.interfaceclick.MovieClickListener
-import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.moviedetails.MovieDetailsActivity
@@ -25,14 +24,13 @@ import com.example.myapplication.databinding.ActivityMovieSimilarBinding
 
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
-    private lateinit var movieSimilarViewModel: MovieDetailsViewModel
+    private lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    private lateinit var movieSimilarViewModel: MovieSimilarViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
-    private var movieDetails = MovieDetails()
     private var movieId = 0
     private lateinit var skeletonScreen: SkeletonScreen
-    private val movieSimilarAdapter: MovieSimilarAdapter by lazy {
-        MovieSimilarAdapter(movieSimilarList, movieDetails, this, onClickItemMovieSimilar())
-    }
+    private val movieSimilarAdapter: MovieSimilarAdapter = MovieSimilarAdapter(movieSimilarList,this, onClickItemMovieSimilar())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,16 +48,17 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         setupAdapter()
 
-        movieSimilarViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieSimilarViewModel.getMovieDetails(PRIMARY_KEY, movieId)
-        movieSimilarViewModel.detailsMovieLiveData.observe(this, {
+        movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel.getMovieDetails(movieId)
+        movieDetailsViewModel.detailsMovieLiveData.observe(this, {
             skeletonScreen.hide()
             if (it != null) {
                 movieSimilarAdapter.setMovie(it)
             }
         })
 
-        movieSimilarViewModel.getMovieSimilar(PRIMARY_KEY, movieId)
+        movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
+        movieSimilarViewModel.getMovieSimilar(movieId)
         movieSimilarViewModel.movieSimilarDetails.observe(this, {
             movieSimilarAdapter.setData(it)
             skeletonScreen.hide()
@@ -67,8 +66,8 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
-                movieSimilarViewModel.getMovieDetails(PRIMARY_KEY, movieId)
-                movieSimilarViewModel.getMovieSimilar(PRIMARY_KEY, movieId)
+                movieDetailsViewModel.getMovieDetails(movieId)
+                movieSimilarViewModel.getMovieSimilar(movieId)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 skeletonScreen.show()
             }

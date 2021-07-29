@@ -9,7 +9,6 @@ import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
@@ -41,14 +40,14 @@ class PeopleDetailsActivity : AppCompatActivity() {
         }
 
         peopleViewModel = ViewModelProvider(this).get(PeopleDetailsViewModel::class.java)
-        peopleViewModel.getMovieDetails(PRIMARY_KEY, peopleId)
-        peopleViewModel.detailsPeopleLiveData.observe(this, {
+        peopleViewModel.getPeopleDetails(peopleId)
+        peopleViewModel.peopleDetailsLiveData.observe(this, {
             skeletonScreen.hide()
             setupInformationOnScreen(it)
         })
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
-            peopleViewModel.getMovieDetails(PRIMARY_KEY, peopleId)
+            peopleViewModel.getPeopleDetails(peopleId)
             binding.connectionOff.layoutConnectionOff.visibility = GONE
             binding.peopleName.visibility = VISIBLE
             binding.textBirthday.visibility = VISIBLE

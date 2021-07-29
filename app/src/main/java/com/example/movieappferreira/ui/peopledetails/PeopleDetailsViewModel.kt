@@ -16,15 +16,16 @@ class PeopleDetailsViewModel: ViewModel() {
         Log.e("Network", "Caught $exception")
     }
 
-    val detailsPeopleLiveData: LiveData<People?>
-        get() = _detailsPeopleLiveData
-    private val _detailsPeopleLiveData = MutableLiveData<People?>()
 
-    fun getMovieDetails(apiKey: String, movieID: Int) {
+    val peopleDetailsLiveData: LiveData<People?>
+        get() = _peopleDetailsLiveData
+    private val _peopleDetailsLiveData = MutableLiveData<People?>()
+
+    fun getPeopleDetails(movieID: Int){
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            try {
-                val peopleDetails = repository.getPeopleDetails(apiKey, movieID)
-                _detailsPeopleLiveData.postValue(peopleDetails)
+            try{
+                val people = repository.getPeopleDetails(movieID)
+                _peopleDetailsLiveData.postValue(people)
             }catch (t:Throwable){
                 return@launch
             }

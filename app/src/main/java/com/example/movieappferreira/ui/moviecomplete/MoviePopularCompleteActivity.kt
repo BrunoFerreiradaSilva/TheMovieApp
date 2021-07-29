@@ -49,7 +49,7 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.apply {
-            getPopularMovies(PRIMARY_KEY, PAGE)
+            getPopularMovies(PAGE)
             popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
                 moviePopularAdapter.setData(it)
                 skeletonScreen.hide()
@@ -58,7 +58,7 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
-                movieViewModel.getPopularMovies(PRIMARY_KEY, PAGE)
+                movieViewModel.getPopularMovies(PAGE)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 skeletonScreen.show()
             }
@@ -82,7 +82,7 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
                 EndlessRecyclerOnScrollListener(layoutManager as GridLayoutManager) {
                 override fun onLoadMore(current_page: Int) {
                     nextPage++
-                    movieViewModel.getPopularMovies(apiKey = PRIMARY_KEY, page = nextPage)
+                    movieViewModel.getPopularMovies(nextPage)
                 }
             })
         }
