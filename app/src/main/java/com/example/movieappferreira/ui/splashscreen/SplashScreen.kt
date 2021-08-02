@@ -22,5 +22,6 @@ class SplashScreen : AppCompatActivity() {
     private fun showSplashScreen() {
         val intent = Intent(this@SplashScreen, MoviePopularCompleteActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

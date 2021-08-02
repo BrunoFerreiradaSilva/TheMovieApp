@@ -19,31 +19,18 @@ class MovieDetailsViewModel : ViewModel() {
         Log.e("Network", "Caught $exception")
     }
 
-    val detailsMovieLiveData: LiveData<MovieDetails?>
-        get() = _detailsMovieLiveData
-    private val _detailsMovieLiveData = MutableLiveData<MovieDetails?>()
+    val detailsMovieAndPeople: Pair<MutableLiveData<MovieDetails?>, MutableLiveData<MutableList<People>>>
+        get() = _detailsMovieAndPeople
+    private val _detailsMovieAndPeople =
+        Pair(MutableLiveData<MovieDetails?>(), MutableLiveData<MutableList<People>>())
 
     fun getMovieDetails(movieID: Int) {
         CoroutineScope(Dispatchers.IO).launch(handler) {
             val movieDetails = repository.getDetailsMovie(movieID)
-            _detailsMovieLiveData.postValue(movieDetails)
+            detailsMovieAndPeople.first.postValue(movieDetails)
+
+            val people = repository.getPeopleMovieList(movieID)
+            detailsMovieAndPeople.second.postValue(people)
         }
     }
-
-    val peopleMovieLiveData: LiveData<MutableList<People>>
-        get() = _peopleMovieLiveData
-    private val _peopleMovieLiveData = MutableLiveData<MutableList<People>>()
-
-    fun getPeopleMovieList(movieID: Int){
-        CoroutineScope(Dispatchers.IO).launch(handler) {
-            try{
-                val people = repository.getPeopleMovieList(movieID)
-                _peopleMovieLiveData.postValue(people)
-            }catch (t:Throwable){
-                return@launch
-            }
-
-        }
-    }
-
 }

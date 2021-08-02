@@ -22,13 +22,16 @@ import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieDetailsPopularBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MovieDetailsActivity : BaseActivity() {
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
     private lateinit var binding: ActivityMovieDetailsPopularBinding
     private val listPeople = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
-    private val movieDetailsAdapter: MovieDetailsAdapter = MovieDetailsAdapter(this, listPeople, getPeopleDetails())
+    private val movieDetailsAdapter: MovieDetailsAdapter =
+        MovieDetailsAdapter(this, listPeople, getPeopleDetails())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +39,23 @@ class MovieDetailsActivity : BaseActivity() {
         binding = ActivityMovieDetailsPopularBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var movieDetails: MovieDetails? = null
-
         setSkeleton()
 
         val movieSimilar = intent.getIntExtra(ID_SIMILAR, 0)
+
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel.getMovieDetails(movieSimilar)
+        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
+            skeletonScreen.hide()
+            if (it != null) {
+                setupInformationScreen(it)
+            }
+        })
+
+        movieDetailsViewModel.detailsMovieAndPeople.second.observe(this, {
+            skeletonScreen.hide()
+            movieDetailsAdapter.setData(it)
+        })
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -49,28 +63,14 @@ class MovieDetailsActivity : BaseActivity() {
             skeletonScreen.hide()
         }
 
-        setupAdapter()
-        movieDetailsViewModel.getMovieDetails(movieSimilar)
-        movieDetailsViewModel.detailsMovieLiveData.observe(this, {
-            skeletonScreen.hide()
-            if (it != null) {
-                setupInformationScreen(it)
-            }
-        })
-
-        movieDetailsViewModel.getPeopleMovieList(movieSimilar)
-        movieDetailsViewModel.peopleMovieLiveData.observe(this, {
-            skeletonScreen.hide()
-            movieDetailsAdapter.setData(it)
-        })
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
                 movieDetailsViewModel.getMovieDetails(movieSimilar)
-                movieDetailsViewModel.getPeopleMovieList(movieSimilar)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 binding.titleDetailsMoviePopular.visibility = VISIBLE
             }
         }
+        setupAdapter()
     }
 
     override fun finish() {
@@ -95,7 +95,7 @@ class MovieDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun setupInformationScreen(movieDetails:MovieDetails) {
+    private fun setupInformationScreen(movieDetails: MovieDetails) {
         binding.apply {
             movieDetails.apply {
                 imageDetailsMoviePopular.loadUrl(backdrop_path)

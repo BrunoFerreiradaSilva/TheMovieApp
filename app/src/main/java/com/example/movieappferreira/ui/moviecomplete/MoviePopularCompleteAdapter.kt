@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_FOOTER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
 import com.example.movieappferreira.interfaceclick.MovieClickListener
@@ -45,8 +44,7 @@ class MoviePopularCompleteAdapter(
         val moviePopularList = moviePopular[position]
         if (holder is TypeItem) {
             holder.apply {
-                Picasso.get().load(PATH_IMAGE + moviePopularList.poster_path)
-                    .into(posterMoviePopularComplete)
+                Picasso.get().load(moviePopularList.poster_path).into(posterMoviePopularComplete)
                 itemView.setOnClickListener {
                     listener.onItemMovieClicked(moviePopularList.id)
                 }

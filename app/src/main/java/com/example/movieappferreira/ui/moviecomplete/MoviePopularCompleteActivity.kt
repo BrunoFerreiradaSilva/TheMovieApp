@@ -7,14 +7,12 @@ import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.pm.ActivityInfoCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PAGE
-import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.pagination.EndlessRecyclerOnScrollListener
@@ -26,12 +24,10 @@ import com.example.myapplication.databinding.ActivityMoviePopularCompleteBinding
 class MoviePopularCompleteActivity : AppCompatActivity() {
     private val movieList: MutableList<MoviePopular> = mutableListOf()
     private lateinit var binding: ActivityMoviePopularCompleteBinding
-    private var nextPage: Int = 1
     private lateinit var movieViewModel: MovieViewModel
     private lateinit var skeletonScreen: SkeletonScreen
-    private val moviePopularAdapter: MoviePopularCompleteAdapter by lazy {
+    private val moviePopularAdapter: MoviePopularCompleteAdapter =
         MoviePopularCompleteAdapter(this, movieList, getMovieItemClickListener())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,20 +36,16 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
         setSkeleton()
 
+        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        movieViewModel.getPopularMovies(PAGE)
+        movieViewModel.popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
+            moviePopularAdapter.setData(it)
+            skeletonScreen.hide()
+        })
+
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
             skeletonScreen.hide()
-        }
-
-        setupAdapter()
-
-        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
-        movieViewModel.apply {
-            getPopularMovies(PAGE)
-            popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
-                moviePopularAdapter.setData(it)
-                skeletonScreen.hide()
-            })
         }
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
@@ -62,8 +54,9 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 skeletonScreen.show()
             }
-
         }
+        setupAdapter()
+
     }
 
     private fun setSkeleton() {
@@ -80,9 +73,8 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
             adapter = moviePopularAdapter
             addOnScrollListener(object :
                 EndlessRecyclerOnScrollListener(layoutManager as GridLayoutManager) {
-                override fun onLoadMore(current_page: Int) {
-                    nextPage++
-                    movieViewModel.getPopularMovies(nextPage)
+                override fun onLoadMore(currentPage: Int) {
+                    movieViewModel.getPopularMovies(currentPage)
                 }
             })
         }
@@ -95,8 +87,16 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
                 val intent =
                     Intent(this@MoviePopularCompleteActivity, MovieSimilarActivity::class.java)
                 intent.putExtra(ID_MOVIE, id)
-                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(applicationContext, R.anim.fade_in, R.anim.move_to_right)
-                ActivityCompat.startActivity(this@MoviePopularCompleteActivity, intent, activityOptionsCompat.toBundle())
+                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.fade_in,
+                    R.anim.move_to_right
+                )
+                ActivityCompat.startActivity(
+                    this@MoviePopularCompleteActivity,
+                    intent,
+                    activityOptionsCompat.toBundle()
+                )
             }
         }
     }

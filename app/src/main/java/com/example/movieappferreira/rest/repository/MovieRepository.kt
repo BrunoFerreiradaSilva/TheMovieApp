@@ -24,19 +24,19 @@ class MovieRepository {
         }
     }
 
-    suspend fun getPeopleMovieList(movieID: Int): MutableList<People>{
-        return try {
-            RetrofitInitializer.movieService.getPeopleMovie(movieID).cast
-        }catch (e:RuntimeException){
-            mutableListOf()
-        }
-    }
-
     suspend fun getPeopleDetails(peopleID:Int): People?{
         return try {
             RetrofitInitializer.movieService.getPeopleDetails(peopleID)
         }catch (e:RuntimeException){
             null
+        }
+    }
+
+    suspend fun getPeopleMovieList(movieID: Int): MutableList<People>{
+        return try {
+            RetrofitInitializer.movieService.getPeopleMovie(movieID).cast
+        }catch (e:RuntimeException){
+            mutableListOf()
         }
     }
 

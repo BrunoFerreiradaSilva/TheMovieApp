@@ -12,10 +12,10 @@ class PeopleDetailsViewModel: ViewModel() {
     private val repository: MovieRepository by lazy {
         MovieRepository()
     }
+
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")
     }
-
 
     val peopleDetailsLiveData: LiveData<People?>
         get() = _peopleDetailsLiveData
@@ -29,7 +29,6 @@ class PeopleDetailsViewModel: ViewModel() {
             }catch (t:Throwable){
                 return@launch
             }
-
         }
     }
 }
