@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_HEADER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
+import com.example.movieappferreira.base.ImageCacheDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
@@ -42,24 +43,27 @@ class MovieSimilarAdapter(
         }
     }
 
-    inner class HeaderItemList(itemHeaderRecyclerSimilarMoviesBinding: ItemHeaderRecyclerSimilarMoviesBinding) :
+    inner class HeaderItemList(private val itemHeaderRecyclerSimilarMoviesBinding: ItemHeaderRecyclerSimilarMoviesBinding) :
         RecyclerView.ViewHolder(itemHeaderRecyclerSimilarMoviesBinding.root) {
-        val imageHeader: ImageView = itemView.findViewById(R.id.image_header_recycler_similar)
-        val nameMovieHeader: TextView = itemView.findViewById(R.id.name_movie_header_recycler)
+        fun binding(movieDetails: MovieDetails){
+            ImageCacheDownload.download(itemHeaderRecyclerSimilarMoviesBinding.imageHeaderRecyclerSimilar, movieDetails.backdrop_path)
+            itemHeaderRecyclerSimilarMoviesBinding.nameMovieHeaderRecycler.text = movieDetails.original_title
+        }
     }
 
-    inner class ItemMovieSimilar(recyclerItemMovieSimilarBinding: RecyclerItemMovieSimilarBinding) :
+    inner class ItemMovieSimilar(private val recyclerItemMovieSimilarBinding: RecyclerItemMovieSimilarBinding) :
         RecyclerView.ViewHolder(recyclerItemMovieSimilarBinding.root) {
-        val imageMovieSimilar: ImageView = itemView.findViewById(R.id.image_item_movie_similar)
-        val nameMovieSimilar: TextView = itemView.findViewById(R.id.name_item_movie_similar)
+        fun binding(movieSimilar: MovieSimilar){
+            ImageCacheDownload.download(recyclerItemMovieSimilarBinding.imageItemMovieSimilar, movieSimilar.poster_path)
+            recyclerItemMovieSimilarBinding.nameItemMovieSimilar.text = movieSimilar.title
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val movieSimilar = movieSimilar[position]
         if (holder is ItemMovieSimilar) {
             holder.apply {
-                Picasso.get().load(PATH_IMAGE + movieSimilar.poster_path).into(imageMovieSimilar)
-                nameMovieSimilar.text = movieSimilar.title
+                binding(movieSimilar)
                 itemView.setOnClickListener {
                     listener.onItemMovieClicked(movieSimilar.id)
                 }
@@ -67,8 +71,7 @@ class MovieSimilarAdapter(
         }
         if (holder is HeaderItemList) {
             holder.apply {
-                Picasso.get().load(PATH_IMAGE + movieDetails.backdrop_path).into(imageHeader)
-                nameMovieHeader.text = movieDetails.original_title
+                binding(movieDetails)
                 itemView.setOnClickListener {
                     listener.onItemMovieClicked(movieDetails.id)
                 }
