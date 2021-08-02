@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappferreira.base.Constants.TYPE_FOOTER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
+import com.example.movieappferreira.base.ImageCacheDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.myapplication.R
@@ -44,7 +45,7 @@ class MoviePopularCompleteAdapter(
         val moviePopularList = moviePopular[position]
         if (holder is TypeItem) {
             holder.apply {
-                Picasso.get().load(moviePopularList.poster_path).into(posterMoviePopularComplete)
+                ImageCacheDownload.download(posterMoviePopularComplete, moviePopularList.poster_path)
                 itemView.setOnClickListener {
                     listener.onItemMovieClicked(moviePopularList.id)
                 }
