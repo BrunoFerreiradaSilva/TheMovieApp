@@ -56,6 +56,7 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
             }
         }
         setupAdapter()
+
     }
 
     private fun setSkeleton() {
