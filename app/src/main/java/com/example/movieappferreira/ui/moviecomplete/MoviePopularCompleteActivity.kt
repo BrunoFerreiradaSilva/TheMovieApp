@@ -43,20 +43,20 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
             skeletonScreen.hide()
         })
 
-        if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
-            skeletonScreen.hide()
-        }
-
-        binding.connectionOff.buttonRetryConnection.setOnClickListener {
-            if (ConnectionOn().isConnected(this)) {
-                movieViewModel.getPopularMovies(PAGE)
-                binding.connectionOff.layoutConnectionOff.visibility = GONE
-                skeletonScreen.show()
-            }
-        }
+//        if (!ConnectionOn().isConnected(this)) {
+//            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
+//            skeletonScreen.hide()
+//        }
+//
+//        binding.connectionOff.buttonRetryConnection.setOnClickListener {
+//            if (ConnectionOn().isConnected(this)) {
+//                movieViewModel.getPopularMovies(PAGE)
+//                binding.connectionOff.layoutConnectionOff.visibility = GONE
+//                skeletonScreen.show()
+//            }
+//        }
         setupAdapter()
-
+        skeletonScreen.hide()
     }
 
     private fun setSkeleton() {

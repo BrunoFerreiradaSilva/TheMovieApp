@@ -3,20 +3,17 @@ package com.example.movieappferreira.ui.moviessimilar
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_HEADER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
-import com.example.movieappferreira.base.ImageCacheDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
-import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemHeaderRecyclerSimilarMoviesBinding
 import com.example.myapplication.databinding.RecyclerItemMovieSimilarBinding
-import com.squareup.picasso.Picasso
 
 class MovieSimilarAdapter(
     private var movieSimilar: MutableList<MovieSimilar> = mutableListOf(),
@@ -46,7 +43,7 @@ class MovieSimilarAdapter(
     inner class HeaderItemList(private val itemHeaderRecyclerSimilarMoviesBinding: ItemHeaderRecyclerSimilarMoviesBinding) :
         RecyclerView.ViewHolder(itemHeaderRecyclerSimilarMoviesBinding.root) {
         fun binding(movieDetails: MovieDetails){
-            ImageCacheDownload.download(itemHeaderRecyclerSimilarMoviesBinding.imageHeaderRecyclerSimilar, movieDetails.backdrop_path)
+            itemHeaderRecyclerSimilarMoviesBinding.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails.backdrop_path)
             itemHeaderRecyclerSimilarMoviesBinding.nameMovieHeaderRecycler.text = movieDetails.original_title
         }
     }
@@ -54,7 +51,7 @@ class MovieSimilarAdapter(
     inner class ItemMovieSimilar(private val recyclerItemMovieSimilarBinding: RecyclerItemMovieSimilarBinding) :
         RecyclerView.ViewHolder(recyclerItemMovieSimilarBinding.root) {
         fun binding(movieSimilar: MovieSimilar){
-            ImageCacheDownload.download(recyclerItemMovieSimilarBinding.imageItemMovieSimilar, movieSimilar.poster_path)
+            recyclerItemMovieSimilarBinding.imageItemMovieSimilar.load(PATH_IMAGE + movieSimilar.poster_path)
             recyclerItemMovieSimilarBinding.nameItemMovieSimilar.text = movieSimilar.title
         }
     }

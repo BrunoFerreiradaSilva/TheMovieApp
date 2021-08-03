@@ -2,13 +2,13 @@ package com.example.movieappferreira.ui.moviecomplete
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_FOOTER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
-import com.example.movieappferreira.base.ImageCacheDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.myapplication.databinding.LoadForMoreMoviesBinding
@@ -70,7 +70,7 @@ class MoviePopularCompleteAdapter(
     inner class TypeItem(private val recyclerItemPeopleBinding: RecyclerItemMoviePopularCompleteBinding) :
         RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(moviePopular: MoviePopular){
-            ImageCacheDownload.download(recyclerItemPeopleBinding.posterPopularCompleteMovie, moviePopular.poster_path)
+            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(PATH_IMAGE + moviePopular.poster_path)
         }
     }
 

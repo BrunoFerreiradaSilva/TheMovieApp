@@ -3,13 +3,12 @@ package com.example.movieappferreira.ui.moviedetails
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieappferreira.base.ImageCacheDownload
+import coil.load
+import com.example.movieappferreira.base.Constants
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.People
-import com.example.myapplication.R
 import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 import java.lang.NullPointerException
 
@@ -53,7 +52,7 @@ class MovieDetailsAdapter(
     inner class ItemPeople(private val recyclerItemPeopleBinding: RecyclerItemPepopleBinding
     ) : RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(people: People){
-            ImageCacheDownload.download(recyclerItemPeopleBinding.imagePeople, people.profile_path)
+            recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.name)
             recyclerItemPeopleBinding.namePeople.text = people.name
         }
     }

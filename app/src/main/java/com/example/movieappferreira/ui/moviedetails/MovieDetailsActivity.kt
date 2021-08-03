@@ -9,12 +9,12 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.BaseActivity
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
 import com.example.movieappferreira.base.Constants.PEOPLE_ID
-import com.example.movieappferreira.extensions.loadUrl
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
@@ -22,7 +22,6 @@ import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieDetailsPopularBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MovieDetailsActivity : BaseActivity() {
@@ -98,7 +97,7 @@ class MovieDetailsActivity : BaseActivity() {
     private fun setupInformationScreen(movieDetails: MovieDetails) {
         binding.apply {
             movieDetails.apply {
-                imageDetailsMoviePopular.loadUrl(backdrop_path)
+                imageDetailsMoviePopular.load(backdrop_path)
                 titleDetailsMoviePopular.text = original_title
                 summaryDetails.text = overview
                 releaseDateMovieDetails.text = release_date.split("-")[0]
