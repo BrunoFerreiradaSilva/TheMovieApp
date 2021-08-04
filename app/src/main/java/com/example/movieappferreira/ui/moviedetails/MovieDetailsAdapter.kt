@@ -52,7 +52,7 @@ class MovieDetailsAdapter(
     inner class ItemPeople(private val recyclerItemPeopleBinding: RecyclerItemPepopleBinding
     ) : RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(people: People){
-            recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.name)
+            recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.profile_path)
             recyclerItemPeopleBinding.namePeople.text = people.name
         }
     }

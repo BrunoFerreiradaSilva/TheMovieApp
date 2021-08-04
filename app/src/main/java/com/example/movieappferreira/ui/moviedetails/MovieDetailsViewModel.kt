@@ -1,5 +1,6 @@
 package com.example.movieappferreira.ui.moviedetails
 
+import android.graphics.Movie
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,18 +20,20 @@ class MovieDetailsViewModel : ViewModel() {
         Log.e("Network", "Caught $exception")
     }
 
-    val detailsMovieAndPeople: Pair<MutableLiveData<MovieDetails?>, MutableLiveData<MutableList<People>>>
+    val detailsMovieAndPeople: LiveData<Pair<MutableLiveData<MovieDetails?>,MutableLiveData<MutableList<People>>>>
         get() = _detailsMovieAndPeople
-    private val _detailsMovieAndPeople =
-        Pair(MutableLiveData<MovieDetails?>(), MutableLiveData<MutableList<People>>())
+    private val _detailsMovieAndPeople = MutableLiveData(Pair(
+        MutableLiveData<MovieDetails?>(),
+        MutableLiveData<MutableList<People>>()
+    ))
 
-    fun getMovieDetails(movieID: Int) {
+    fun getMovieAndPeopleDetails(movieID: Int) {
         CoroutineScope(Dispatchers.IO).launch(handler) {
             val movieDetails = repository.getDetailsMovie(movieID)
-            detailsMovieAndPeople.first.postValue(movieDetails)
+            detailsMovieAndPeople.value?.first?.postValue(movieDetails)
 
             val people = repository.getPeopleMovieList(movieID)
-            detailsMovieAndPeople.second.postValue(people)
+            detailsMovieAndPeople.value?.second?.postValue(people)
         }
     }
 }

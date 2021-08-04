@@ -14,9 +14,7 @@ import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.ui.moviedetails.MovieDetailsViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
-import com.example.movieappferreira.base.Constants.PRIMARY_KEY
 import com.example.movieappferreira.interfaceclick.MovieClickListener
-import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.moviedetails.MovieDetailsActivity
@@ -43,8 +41,8 @@ class MovieSimilarActivity : AppCompatActivity() {
         val movieId = intent.getIntExtra(ID_MOVIE, 0)
 
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.getMovieDetails(movieId)
-        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
+        movieDetailsViewModel.getMovieAndPeopleDetails(movieId)
+        movieDetailsViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
             skeletonScreen.hide()
             if (it != null) {
                 movieSimilarAdapter.setMovie(it)
@@ -65,7 +63,7 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
-                movieDetailsViewModel.getMovieDetails(movieId)
+                movieDetailsViewModel.getMovieAndPeopleDetails(movieId)
                 movieSimilarViewModel.getMovieSimilar(movieId)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 skeletonScreen.show()

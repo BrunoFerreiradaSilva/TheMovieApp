@@ -14,6 +14,7 @@ import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.BaseActivity
 import com.example.movieappferreira.base.Constants.ID_SIMILAR
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.PEOPLE_ID
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
@@ -43,15 +44,15 @@ class MovieDetailsActivity : BaseActivity() {
         val movieSimilar = intent.getIntExtra(ID_SIMILAR, 0)
 
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.getMovieDetails(movieSimilar)
-        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
+        movieDetailsViewModel.getMovieAndPeopleDetails(movieSimilar)
+        movieDetailsViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
             skeletonScreen.hide()
             if (it != null) {
                 setupInformationScreen(it)
             }
         })
 
-        movieDetailsViewModel.detailsMovieAndPeople.second.observe(this, {
+        movieDetailsViewModel.detailsMovieAndPeople.value?.second?.observe(this, {
             skeletonScreen.hide()
             movieDetailsAdapter.setData(it)
         })
@@ -64,7 +65,7 @@ class MovieDetailsActivity : BaseActivity() {
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
-                movieDetailsViewModel.getMovieDetails(movieSimilar)
+                movieDetailsViewModel.getMovieAndPeopleDetails(movieSimilar)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 binding.titleDetailsMoviePopular.visibility = VISIBLE
             }
@@ -97,7 +98,7 @@ class MovieDetailsActivity : BaseActivity() {
     private fun setupInformationScreen(movieDetails: MovieDetails) {
         binding.apply {
             movieDetails.apply {
-                imageDetailsMoviePopular.load(backdrop_path)
+                imageDetailsMoviePopular.load(PATH_IMAGE + backdrop_path)
                 titleDetailsMoviePopular.text = original_title
                 summaryDetails.text = overview
                 releaseDateMovieDetails.text = release_date.split("-")[0]

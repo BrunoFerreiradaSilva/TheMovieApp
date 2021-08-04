@@ -2,7 +2,7 @@ package com.example.movieappferreira.base
 
 object Constants {
     const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val PATH_IMAGE = "https://image.tmdb.org/t/p/w342/"
+    const val PATH_IMAGE = "https://image.tmdb.org/t/p/w342"
     const val PAGE = 1
     const val ID_MOVIE = "ID_MOVIE"
     const val ID_SIMILAR = "ID_SIMILAR"
