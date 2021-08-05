@@ -1,17 +1,15 @@
-package com.example.movieappferreira.ui.moviedetails
+package com.example.movieappferreira.ui.people
 
-import android.graphics.Movie
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movieappferreira.model.MovieDetails
-import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.repository.MovieRepository
 import kotlinx.coroutines.*
 
-class MovieDetailsViewModel : ViewModel() {
+class PeopleViewModel : ViewModel() {
     private val repository: MovieRepository by lazy {
         MovieRepository()
     }

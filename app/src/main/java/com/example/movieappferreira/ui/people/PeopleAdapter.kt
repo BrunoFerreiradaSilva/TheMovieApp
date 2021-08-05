@@ -1,18 +1,17 @@
-package com.example.movieappferreira.ui.moviedetails
+package com.example.movieappferreira.ui.people
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.People
 import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 import java.lang.NullPointerException
 
-class MovieDetailsAdapter(
+class PeopleAdapter(
     private val context: Context,
     private val listPeople: MutableList<People>,
     private val listener: MovieClickListener

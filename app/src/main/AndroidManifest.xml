@@ -22,7 +22,7 @@
         <activity android:name="com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity" />
         <activity android:name="com.example.movieappferreira.ui.moviecomplete.MoviePopularCompleteActivity" />
         <activity android:name="com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity" />
-        <activity android:name="com.example.movieappferreira.ui.moviedetails.MovieDetailsActivity" />
+        <activity android:name="com.example.movieappferreira.ui.people.MovieDetailsActivity" />
         <activity
             android:name="com.example.movieappferreira.ui.splashscreen.SplashScreen"
             android:label="@string/app_name">

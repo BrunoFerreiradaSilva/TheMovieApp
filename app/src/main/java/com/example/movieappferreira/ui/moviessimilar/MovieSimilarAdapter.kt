@@ -5,60 +5,47 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_HEADER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
+import com.example.movieappferreira.base.Constants.TYPE_SECTION
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
-import com.example.myapplication.databinding.ItemHeaderRecyclerSimilarMoviesBinding
+import com.example.movieappferreira.model.People
 import com.example.myapplication.databinding.RecyclerItemMovieSimilarBinding
+import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 
 class MovieSimilarAdapter(
-    private var movieSimilar: MutableList<MovieSimilar> = mutableListOf(),
+    private var movieSimilar: MutableList<MovieSimilar>,
     private val context: Context,
     private val listener: MovieClickListener
 
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 ) {
-    lateinit var movieDetails: MovieDetails
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TYPE_HEADER -> {
-                val layoutInflater = LayoutInflater.from(context)
-                val itemHeaderList =
-                    ItemHeaderRecyclerSimilarMoviesBinding.inflate(layoutInflater, parent, false)
-                HeaderItemList(itemHeaderList)
-            }
-            else -> {
-                val layoutInflater = LayoutInflater.from(context)
-                val recyclerItemMovieSimilar: RecyclerItemMovieSimilarBinding =
-                    RecyclerItemMovieSimilarBinding.inflate(layoutInflater, parent, false)
-                ItemMovieSimilar(recyclerItemMovieSimilar)
-            }
-        }
+        val layoutInflater = LayoutInflater.from(context)
+        val recyclerItemMovieSimilar: RecyclerItemMovieSimilarBinding =
+            RecyclerItemMovieSimilarBinding.inflate(layoutInflater, parent, false)
+        return ItemMovieSimilar(recyclerItemMovieSimilar)
     }
 
-    inner class HeaderItemList(private val itemHeaderRecyclerSimilarMoviesBinding: ItemHeaderRecyclerSimilarMoviesBinding) :
-        RecyclerView.ViewHolder(itemHeaderRecyclerSimilarMoviesBinding.root) {
-        fun binding(movieDetails: MovieDetails){
-            itemHeaderRecyclerSimilarMoviesBinding.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails.backdrop_path)
-            itemHeaderRecyclerSimilarMoviesBinding.nameMovieHeaderRecycler.text = movieDetails.original_title
-        }
-    }
 
     inner class ItemMovieSimilar(private val recyclerItemMovieSimilarBinding: RecyclerItemMovieSimilarBinding) :
         RecyclerView.ViewHolder(recyclerItemMovieSimilarBinding.root) {
-        fun binding(movieSimilar: MovieSimilar){
+        fun binding(movieSimilar: MovieSimilar) {
             recyclerItemMovieSimilarBinding.imageItemMovieSimilar.load(PATH_IMAGE + movieSimilar.poster_path)
             recyclerItemMovieSimilarBinding.nameItemMovieSimilar.text = movieSimilar.title
         }
     }
 
+    override fun getItemCount(): Int {
+        return movieSimilar.size
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val movieSimilar = movieSimilar[position]
         if (holder is ItemMovieSimilar) {
+            val movieSimilar = movieSimilar[position]
             holder.apply {
                 binding(movieSimilar)
                 itemView.setOnClickListener {
@@ -66,22 +53,6 @@ class MovieSimilarAdapter(
                 }
             }
         }
-        if (holder is HeaderItemList) {
-            holder.apply {
-                binding(movieDetails)
-                itemView.setOnClickListener {
-                    listener.onItemMovieClicked(movieDetails.id)
-                }
-            }
-        }
-    }
-
-    private fun isPositionFooter(position: Int): Boolean {
-        return position == 0
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (isPositionFooter(position)) TYPE_HEADER else TYPE_ITEM
     }
 
     fun setData(movieSimilar: MutableList<MovieSimilar>) {
@@ -89,12 +60,4 @@ class MovieSimilarAdapter(
         notifyDataSetChanged()
     }
 
-    fun setMovie(movieDetails: MovieDetails) {
-        this.movieDetails = movieDetails
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return movieSimilar.size
-    }
 }
