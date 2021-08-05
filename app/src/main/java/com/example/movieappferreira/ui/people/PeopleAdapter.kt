@@ -1,28 +1,26 @@
-package com.example.movieappferreira.ui.moviedetails
+package com.example.movieappferreira.ui.people
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.People
-import com.example.myapplication.R
-import com.squareup.picasso.Picasso
+import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 import java.lang.NullPointerException
 
-class MovieDetailsAdapter(
+class PeopleAdapter(
     private val context: Context,
     private val listPeople: MutableList<People>,
     private val listener: MovieClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.recycler_item_pepople, parent, false)
-        return ItemPeople(view)
+        val layoutInflater = LayoutInflater.from(context)
+        val recyclerItemPeopleBinding =
+            RecyclerItemPepopleBinding.inflate(layoutInflater, parent, false)
+        return ItemPeople(recyclerItemPeopleBinding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -30,8 +28,7 @@ class MovieDetailsAdapter(
         if (holder is ItemPeople) {
             holder.apply {
                 try {
-                    Picasso.get().load(PATH_IMAGE + people.profile_path).into(imagePeople)
-                    namePeople.text = people.name
+                    binding(people)
                 } catch (e: NullPointerException) {
                     return
                 }
@@ -51,9 +48,12 @@ class MovieDetailsAdapter(
         notifyDataSetChanged()
     }
 
-    class ItemPeople(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imagePeople: ImageView = itemView.findViewById(R.id.image_people)
-        val namePeople: TextView = itemView.findViewById(R.id.name_people)
+    inner class ItemPeople(private val recyclerItemPeopleBinding: RecyclerItemPepopleBinding
+    ) : RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
+        fun binding(people: People){
+            recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.profile_path)
+            recyclerItemPeopleBinding.namePeople.text = people.name
+        }
     }
 
 }
