@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_people"
         android:layout_width="100dp"

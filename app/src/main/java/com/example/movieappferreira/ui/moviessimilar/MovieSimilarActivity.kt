@@ -9,29 +9,34 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieappferreira.ui.moviedetails.MovieDetailsViewModel
+import com.example.movieappferreira.base.Constants
+import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
-import com.example.movieappferreira.base.Constants.ID_SIMILAR
-import com.example.movieappferreira.base.Constants.PRIMARY_KEY
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
+import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
-import com.example.movieappferreira.ui.moviedetails.MovieDetailsActivity
+import com.example.movieappferreira.ui.people.PeopleAdapter
+import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieSimilarBinding
 
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
-    private lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    private lateinit var peopleViewModel: PeopleViewModel
     private lateinit var movieSimilarViewModel: MovieSimilarViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
+    private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
+    private val peopleAdapter: PeopleAdapter = PeopleAdapter(this,peopleList,getPeopleDetails())
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +47,15 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         val movieId = intent.getIntExtra(ID_MOVIE, 0)
 
-        movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.getMovieDetails(movieId)
-        movieDetailsViewModel.detailsMovieAndPeople.first.observe(this, {
+        peopleViewModel = ViewModelProvider(this).get(PeopleViewModel::class.java)
+        peopleViewModel.getMovieAndPeopleDetails(movieId)
+        peopleViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
+            setupInformation(it)
             skeletonScreen.hide()
-            if (it != null) {
-                movieSimilarAdapter.setMovie(it)
-            }
+        })
+        peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this,{
+            peopleAdapter.setData(it)
+            skeletonScreen.hide()
         })
 
         movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
@@ -65,13 +72,14 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             if (ConnectionOn().isConnected(this)) {
-                movieDetailsViewModel.getMovieDetails(movieId)
+                peopleViewModel.getMovieAndPeopleDetails(movieId)
                 movieSimilarViewModel.getMovieSimilar(movieId)
                 binding.connectionOff.layoutConnectionOff.visibility = GONE
                 skeletonScreen.show()
             }
         }
         setupAdapter()
+        setupAdapterPeople()
     }
 
     override fun finish() {
@@ -87,6 +95,12 @@ class MovieSimilarActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun setupInformation(movieDetails: MovieDetails?){
+        binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
+        binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.original_title
+
+    }
+
     private fun setupAdapter() {
         binding.recyclerSimilarMovies.apply {
             layoutManager = LinearLayoutManager(this@MovieSimilarActivity)
@@ -94,11 +108,37 @@ class MovieSimilarActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupAdapterPeople(){
+        binding.recyclerPeople.apply {
+            layoutManager = LinearLayoutManager(this@MovieSimilarActivity,RecyclerView.HORIZONTAL,false)
+            adapter = peopleAdapter
+        }
+    }
+
     private fun onClickItemMovieSimilar(): MovieClickListener {
         return object : MovieClickListener {
             override fun onItemMovieClicked(id: Int) {
-                val intent = Intent(this@MovieSimilarActivity, MovieDetailsActivity::class.java)
-                intent.putExtra(ID_SIMILAR, id)
+                val intent = Intent(this@MovieSimilarActivity, MovieSimilarActivity::class.java)
+                intent.putExtra(ID_MOVIE, id)
+                val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(
+                    applicationContext,
+                    R.anim.fade_in,
+                    R.anim.move_to_right
+                )
+                ActivityCompat.startActivity(
+                    this@MovieSimilarActivity,
+                    intent,
+                    activityOptionsCompat.toBundle()
+                )
+            }
+        }
+    }
+
+    private fun getPeopleDetails(): MovieClickListener {
+        return object : MovieClickListener {
+            override fun onItemMovieClicked(id: Int) {
+                val intent = Intent(this@MovieSimilarActivity, PeopleDetailsActivity::class.java)
+                intent.putExtra(Constants.PEOPLE_ID, id)
                 val activityOptionsCompat = ActivityOptionsCompat.makeCustomAnimation(
                     applicationContext,
                     R.anim.fade_in,

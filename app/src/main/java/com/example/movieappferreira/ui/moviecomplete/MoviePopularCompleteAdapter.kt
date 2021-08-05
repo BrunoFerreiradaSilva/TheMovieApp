@@ -1,27 +1,38 @@
 package com.example.movieappferreira.ui.moviecomplete
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import android.text.util.Linkify.ALL
+import android.util.LruCache
 import android.view.LayoutInflater
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import coil.*
+import coil.request.ImageRequest
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_FOOTER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
+import com.example.movieappferreira.base.ImageDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
-import com.example.myapplication.R
 import com.example.myapplication.databinding.LoadForMoreMoviesBinding
 import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBinding
-import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
+import okhttp3.internal.cache.DiskLruCache
+import java.io.File
+import java.io.FileInputStream
+import java.lang.RuntimeException
+import java.util.logging.Level.ALL
 
 class MoviePopularCompleteAdapter(
     private val context: Context,
     private val moviePopular: MutableList<MoviePopular>,
     private val listener: MovieClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    private lateinit var memoryCache: LruCache<String, Bitmap>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_ITEM -> {
@@ -44,7 +55,7 @@ class MoviePopularCompleteAdapter(
         val moviePopularList = moviePopular[position]
         if (holder is TypeItem) {
             holder.apply {
-                Picasso.get().load(moviePopularList.poster_path).into(posterMoviePopularComplete)
+                binding(moviePopularList)
                 itemView.setOnClickListener {
                     listener.onItemMovieClicked(moviePopularList.id)
                 }
@@ -53,7 +64,8 @@ class MoviePopularCompleteAdapter(
         }
         if (holder is TypeFooter) {
             holder.apply {
-                loadingMovies.visibility = VISIBLE
+                binding(this)
+
             }
         }
     }
@@ -68,19 +80,29 @@ class MoviePopularCompleteAdapter(
         return if (isPositionFooter(position)) TYPE_FOOTER else TYPE_ITEM
     }
 
-    inner class TypeItem(recyclerItemPeopleBinding: RecyclerItemMoviePopularCompleteBinding) :
+    inner class TypeItem(private val recyclerItemPeopleBinding: RecyclerItemMoviePopularCompleteBinding) :
         RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
-        val posterMoviePopularComplete: ImageView =
-            itemView.findViewById(R.id.poster_popular_complete_movie)
+        fun binding(moviePopular: MoviePopular) {
+            val request = ImageDownload.download(
+                context,
+                moviePopular,
+                recyclerItemPeopleBinding.posterPopularCompleteMovie
+            )
+            val fileName = request.data.toString()
+            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(fileName)
+        }
     }
 
-    inner class TypeFooter(loadForMoreMoviesBinding: LoadForMoreMoviesBinding) :
+    inner class TypeFooter(private var loadForMoreMoviesBinding: LoadForMoreMoviesBinding) :
         RecyclerView.ViewHolder(loadForMoreMoviesBinding.root) {
-        val loadingMovies: ProgressBar = itemView.findViewById(R.id.progressBar_movie_complete)
+        fun binding(progressBar: TypeFooter) {
+            progressBar.loadForMoreMoviesBinding.progressBarMovieComplete.isVisible
+        }
     }
 
     fun setData(moviePopularList: MutableList<MoviePopular>) {
         this.moviePopular.addAll(moviePopularList)
         notifyDataSetChanged()
     }
+
 }

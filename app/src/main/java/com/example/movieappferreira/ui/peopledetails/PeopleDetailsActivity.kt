@@ -5,6 +5,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants
@@ -13,7 +14,6 @@ import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPeopleDetailsBinding
-import com.squareup.picasso.Picasso
 
 class PeopleDetailsActivity : AppCompatActivity() {
     private lateinit var peopleViewModel: PeopleDetailsViewModel
@@ -62,7 +62,7 @@ class PeopleDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupInformationOnScreen(it: People?) {
-        Picasso.get().load(PATH_IMAGE + it?.profile_path).into(binding.peoplePhoto)
+        binding.peoplePhoto.load(PATH_IMAGE + it?.profile_path)
         binding.peopleName.text = it?.name
         binding.peopleBiography.text = it?.biography
         binding.peopleBirthday.text = it?.birthday
