@@ -2,6 +2,7 @@ package com.example.movieappferreira.ui.moviecomplete
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.text.util.Linkify.ALL
 import android.util.LruCache
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import coil.request.ImageRequest
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.base.Constants.TYPE_FOOTER
 import com.example.movieappferreira.base.Constants.TYPE_ITEM
+import com.example.movieappferreira.base.ImageDownload
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.myapplication.databinding.LoadForMoreMoviesBinding
@@ -20,6 +22,7 @@ import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBin
 import kotlinx.coroutines.Dispatchers
 import okhttp3.Dispatcher
 import okhttp3.internal.cache.DiskLruCache
+import java.io.File
 import java.io.FileInputStream
 import java.lang.RuntimeException
 import java.util.logging.Level.ALL
@@ -80,16 +83,13 @@ class MoviePopularCompleteAdapter(
     inner class TypeItem(private val recyclerItemPeopleBinding: RecyclerItemMoviePopularCompleteBinding) :
         RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(moviePopular: MoviePopular) {
-            val imageLoader = Coil.imageLoader(context)
-            val request = ImageRequest.Builder(context)
-                .data(PATH_IMAGE + moviePopular.poster_path)
-                .crossfade(true)
-                .dispatcher(Dispatchers.Unconfined)
-                .memoryCacheKey(PATH_IMAGE + moviePopular.poster_path)
-                .target(recyclerItemPeopleBinding.posterPopularCompleteMovie)
-                .build()
-            Coil.setImageLoader(imageLoader)
-            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(request.data.toString())
+            val request = ImageDownload.download(
+                context,
+                moviePopular,
+                recyclerItemPeopleBinding.posterPopularCompleteMovie
+            )
+            val fileName = request.data.toString()
+            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(fileName)
         }
     }
 
