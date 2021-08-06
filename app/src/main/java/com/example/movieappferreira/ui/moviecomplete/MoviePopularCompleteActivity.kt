@@ -52,11 +52,6 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
         })
 
         if (!ConnectionOn().isConnected(this)) {
-            movieRoomViewModel.allPerson.observe(this, {
-                moviePopularAdapter.setData(it)
-            })
-            skeletonScreen.hide()
-        }
 
         setupAdapter()
         skeletonScreen.hide()
