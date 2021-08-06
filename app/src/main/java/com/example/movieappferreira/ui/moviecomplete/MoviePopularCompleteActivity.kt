@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
+import com.example.movieappferreira.apllication.MovieApplication
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
@@ -26,6 +28,9 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMoviePopularCompleteBinding
     private lateinit var movieViewModel: MovieViewModel
     private lateinit var skeletonScreen: SkeletonScreen
+    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
+        MovieViewModelFactory((application as MovieApplication).repository)
+    }
     private val moviePopularAdapter: MoviePopularCompleteAdapter =
         MoviePopularCompleteAdapter(this, movieList, getMovieItemClickListener())
 
@@ -38,23 +43,16 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.getPopularMovies(PAGE)
+
         movieViewModel.popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
             moviePopularAdapter.setData(it)
             skeletonScreen.hide()
+            binding.loadForMoreMovies.visibility = GONE
+            movieRoomViewModel.insert(movieList)
         })
 
         if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
-            skeletonScreen.hide()
-        }
 
-        binding.connectionOff.buttonRetryConnection.setOnClickListener {
-            if (ConnectionOn().isConnected(this)) {
-                movieViewModel.getPopularMovies(PAGE)
-                binding.connectionOff.layoutConnectionOff.visibility = GONE
-                skeletonScreen.show()
-            }
-        }
         setupAdapter()
         skeletonScreen.hide()
     }
