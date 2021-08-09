@@ -43,21 +43,21 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.getPopularMovies(PAGE)
-
         movieViewModel.popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
             moviePopularAdapter.setData(it)
+            movieRoomViewModel.insert(it)
             skeletonScreen.hide()
             binding.loadForMoreMovies.visibility = GONE
-            movieRoomViewModel.insert(movieList)
+
         })
 
         if (!ConnectionOn().isConnected(this)) {
             movieRoomViewModel.allPerson.observe(this, {
                 moviePopularAdapter.setData(it)
             })
-            setupAdapter()
             skeletonScreen.hide()
         }
+        setupAdapter()
     }
 
     private fun setSkeleton() {

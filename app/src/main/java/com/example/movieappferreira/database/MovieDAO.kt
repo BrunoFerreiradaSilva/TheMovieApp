@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDAO {
-    @Query("SELECT * from table_movie")
+    @Query("SELECT * from table_movie ORDER BY myId")
     fun getAllPerson(): Flow<MutableList<MoviePopular>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

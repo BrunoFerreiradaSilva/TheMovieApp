@@ -50,7 +50,6 @@ class MoviePopularCompleteAdapter(
         }
     }
 
-
     fun setData(moviePopularList: MutableList<MoviePopular>) {
         this.moviePopular.addAll(moviePopularList)
         notifyDataSetChanged()
