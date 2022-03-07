@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="title_movie">Filmes</string>
-    <string name="title_search">Pesquisar</string>
-    <string name="title_profile">Perfil</string>
+    <string name="title_movie">Popular movies</string>
+    <string name="title_search">Favorites</string>
+    <string name="title_profile">Profile</string>
     <string name="bem_vindo">Bem vindo</string>
     <string name="key">Key</string>
     <string name="digite_sua_key">Digite sua key</string>
@@ -44,5 +44,6 @@
     <string name="item_movie_popular_for_recyclerview">item movie popular for recyclerview</string>
     <string name="image_item_for_movie_similar">image item for movie similar</string>
     <string name="title_movie_popular">Movie Popular</string>
+    <string name="title_activity_new_movie">NewMovieActivity</string>
 
 </resources>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -37,6 +38,7 @@ class MovieSimilarActivity : AppCompatActivity() {
     private val peopleAdapter: PeopleAdapter = PeopleAdapter(this,peopleList,getPeopleDetails())
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
+    private var movieId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,11 +49,10 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         setSkeleton()
 
-        val movieId = intent.getIntExtra(ID_MOVIE, 0)
+        movieId = intent.getIntExtra(ID_MOVIE, 0)
 
         initViewModel()
-        peopleViewModel.getMovieAndPeopleDetails(movieId)
-        movieSimilarViewModel.getMovieSimilar(movieId)
+
 
         observeRequest()
 
@@ -70,6 +71,14 @@ class MovieSimilarActivity : AppCompatActivity() {
         }
         setupAdapter()
         setupAdapterPeople()
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        peopleViewModel.getMovieAndPeopleDetails(movieId)
+        movieSimilarViewModel.getMovieSimilar(movieId)
     }
 
     private fun observeRequest() {
@@ -106,9 +115,19 @@ class MovieSimilarActivity : AppCompatActivity() {
     private fun setupInformation(movieDetails: MovieDetails?){
         binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
         binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.overview
-        supportActionBar?.title = movieDetails?.original_title
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar(movieDetails)
 
+    }
+
+    private fun setupToolbar(movieDetails: MovieDetails?) {
+        binding.toolbar.apply {
+            title = movieDetails?.original_title
+            setTitleTextColor(getColor(R.color.white))
+            setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
     }
 
     private fun setupAdapter() {

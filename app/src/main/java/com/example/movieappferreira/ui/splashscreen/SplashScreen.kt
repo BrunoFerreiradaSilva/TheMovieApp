@@ -1,14 +1,11 @@
 package com.example.movieappferreira.ui.splashscreen
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movieappferreira.ui.moviecomplete.MoviePopularCompleteActivity
+import com.example.movieappferreira.ui.home.NewMovieActivity
 import com.example.myapplication.databinding.ActivitySplashScreenBinding
 
 class SplashScreen : AppCompatActivity() {
@@ -16,7 +13,6 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        supportActionBar?.hide()
         setContentView(binding.root)
 
         Handler(Looper.getMainLooper()).postDelayed(
@@ -26,7 +22,7 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun goToMoviePopularComplete() {
-        val intent = Intent(this@SplashScreen, MoviePopularCompleteActivity::class.java)
+        val intent = Intent(this@SplashScreen, NewMovieActivity::class.java)
         startActivity(intent)
         finish()
     }
