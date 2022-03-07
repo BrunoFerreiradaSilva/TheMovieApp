@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_search_movie"
-        android:name="com.example.movieappferreira.ui.dashboard.DashboardFragment"
+        android:name="com.example.movieappferreira.ui.favorites.FavoriteFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.movieappferreira.ui.notifications.NotificationsFragment"
+        android:name="com.example.movieappferreira.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

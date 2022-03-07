@@ -47,5 +47,7 @@
     <string name="title_activity_new_movie">NewMovieActivity</string>
     <string name="there_is_no_information">there is no information</string>
     <string name="biography">Biography</string>
+    <string name="profile_title">Profile</string>
+    <string name="favorites_title">Favorites</string>
 
 </resources>
