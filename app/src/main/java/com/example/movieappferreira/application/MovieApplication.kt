@@ -1,4 +1,4 @@
-package com.example.movieappferreira.apllication
+package com.example.movieappferreira.application
 
 import android.app.Application
 import com.example.movieappferreira.database.MovieDataBase

@@ -1,9 +1,9 @@
 package com.example.movieappferreira.ui.moviecomplete
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieappferreira.apllication.MovieApplication
+import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
