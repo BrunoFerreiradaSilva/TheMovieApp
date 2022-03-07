@@ -37,10 +37,12 @@
     <string name="image_people_selected">Image people selected</string>
     <string name="place_of_birth">Place of birth:</string>
     <string name="birthday">Birthday:</string>
-    <string name="the_movies">My movieApp</string>
+    <string name="the_movies">My MovieApp</string>
     <string name="image_wifi_off">Image wifi off</string>
     <string name="retry">retry</string>
     <string name="image_header_similar_movie">Image header similar movie</string>
     <string name="item_movie_popular_for_recyclerview">item movie popular for recyclerview</string>
     <string name="image_item_for_movie_similar">image item for movie similar</string>
+    <string name="title_movie_popular">Movie Popular</string>
+
 </resources>

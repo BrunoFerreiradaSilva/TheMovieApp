@@ -8,6 +8,7 @@ import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.interfaceclick.MovieClickListener
 import com.example.movieappferreira.model.People
+import com.example.myapplication.R
 import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 import java.lang.NullPointerException
 
@@ -51,7 +52,11 @@ class PeopleAdapter(
     inner class ItemPeople(private val recyclerItemPeopleBinding: RecyclerItemPepopleBinding
     ) : RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(people: People){
-            recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.profile_path)
+            if(people.profile_path != null){
+                recyclerItemPeopleBinding.imagePeople.load(PATH_IMAGE + people.profile_path)
+            }else{
+                recyclerItemPeopleBinding.imagePeople.load(R.drawable.ic_baseline_person_24)
+            }
             recyclerItemPeopleBinding.namePeople.text = people.name
         }
     }

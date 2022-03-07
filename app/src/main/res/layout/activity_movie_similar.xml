@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_dark"
+    android:background="@color/dark"
     android:orientation="horizontal"
     tools:context="com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity">
 
@@ -21,25 +21,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/title_cast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cast"
+            android:layout_marginTop="4dp"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="@font/overpass_regular"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toTopOf="@id/recycler_people"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_item_header" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_people"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_item_header" />
+            app:layout_constraintBottom_toTopOf="@id/title_similar"
+            app:layout_constraintTop_toBottomOf="@id/title_cast" />
 
+
+        <TextView
+            android:id="@+id/title_similar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/overpass_regular"
+            android:text="Similar movie"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/recycler_similar_movies"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_people" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_similar_movies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginHorizontal="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_people" />
+            app:layout_constraintTop_toBottomOf="@+id/title_similar" />
 
         <include
             android:id="@+id/connection_off"

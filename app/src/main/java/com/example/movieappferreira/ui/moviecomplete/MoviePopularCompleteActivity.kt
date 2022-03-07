@@ -36,20 +36,15 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMoviePopularCompleteBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+        binding = ActivityMoviePopularCompleteBinding.inflate(layoutInflater)
+        supportActionBar?.title = getString(R.string.title_movie_popular)
+        setContentView(binding.root)
         setSkeleton()
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.getPopularMovies(PAGE)
-        movieViewModel.popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
-            moviePopularAdapter.setData(it)
-            movieRoomViewModel.insert(it)
-            skeletonScreen.hide()
-            binding.loadForMoreMovies.visibility = GONE
-
-        })
+        observerRequest()
 
         if (!ConnectionOn().isConnected(this)) {
             movieRoomViewModel.allPerson.observe(this, {
@@ -58,6 +53,16 @@ class MoviePopularCompleteActivity : AppCompatActivity() {
             skeletonScreen.hide()
         }
         setupAdapter()
+    }
+
+    private fun observerRequest() {
+        movieViewModel.popularMovieLiveData.observe(this@MoviePopularCompleteActivity, {
+            moviePopularAdapter.setData(it)
+            movieRoomViewModel.insert(it)
+            skeletonScreen.hide()
+            binding.loadForMoreMovies.visibility = GONE
+
+        })
     }
 
     private fun setSkeleton() {

@@ -40,6 +40,8 @@ class MovieSimilarActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         binding = ActivityMovieSimilarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -47,23 +49,11 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         val movieId = intent.getIntExtra(ID_MOVIE, 0)
 
-        peopleViewModel = ViewModelProvider(this).get(PeopleViewModel::class.java)
+        initViewModel()
         peopleViewModel.getMovieAndPeopleDetails(movieId)
-        peopleViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
-            setupInformation(it)
-            skeletonScreen.hide()
-        })
-        peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this,{
-            peopleAdapter.setData(it)
-            skeletonScreen.hide()
-        })
-
-        movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
         movieSimilarViewModel.getMovieSimilar(movieId)
-        movieSimilarViewModel.movieSimilarDetails.observe(this, {
-            movieSimilarAdapter.setData(it)
-            skeletonScreen.hide()
-        })
+
+        observeRequest()
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -82,6 +72,24 @@ class MovieSimilarActivity : AppCompatActivity() {
         setupAdapterPeople()
     }
 
+    private fun observeRequest() {
+        peopleViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
+            setupInformation(it)
+        })
+        peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this, {
+            peopleAdapter.setData(it)
+        })
+        movieSimilarViewModel.movieSimilarDetails.observe(this, {
+            movieSimilarAdapter.setData(it)
+            skeletonScreen.hide()
+        })
+    }
+
+    private fun initViewModel() {
+        peopleViewModel = ViewModelProvider(this).get(PeopleViewModel::class.java)
+        movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
+    }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.move_to_left, R.anim.fade_out)
@@ -97,7 +105,9 @@ class MovieSimilarActivity : AppCompatActivity() {
 
     private fun setupInformation(movieDetails: MovieDetails?){
         binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
-        binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.original_title
+        binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.overview
+        supportActionBar?.title = movieDetails?.original_title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
