@@ -33,10 +33,10 @@ class PeopleDetailsActivity : AppCompatActivity() {
         peopleViewModel = ViewModelProvider(this).get(PeopleDetailsViewModel::class.java)
         peopleViewModel.getPeopleDetails(peopleId)
         peopleViewModel.peopleDetailsLiveData.observe(this, {
-            skeletonScreen.hide()
             if (it != null) {
                 setupInformationOnScreen(it)
             }
+            skeletonScreen.hide()
         })
 
         if (!ConnectionOn().isConnected(this)) {

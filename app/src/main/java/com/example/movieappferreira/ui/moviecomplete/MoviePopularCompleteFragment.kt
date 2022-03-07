@@ -28,7 +28,6 @@ class MoviePopularCompleteFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val movieList: MutableList<MoviePopular> = mutableListOf()
     private lateinit var movieViewModel: MovieViewModel
-    private lateinit var skeletonScreen: SkeletonScreen
     private val movieRoomViewModel: MovieRoomViewModel by viewModels {
         MovieViewModelFactory((activity?.application as MovieApplication).repository)
     }
@@ -40,7 +39,6 @@ class MoviePopularCompleteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        setSkeleton()
 
         return binding.root
     }
@@ -56,7 +54,7 @@ class MoviePopularCompleteFragment : Fragment() {
             movieRoomViewModel.allPerson.observe(requireActivity(), {
                 moviePopularAdapter.setData(it)
             })
-            skeletonScreen.hide()
+            (activity as NewMovieActivity).hideSkeleton()
         }
         setupAdapter()
 
@@ -71,18 +69,10 @@ class MoviePopularCompleteFragment : Fragment() {
         movieViewModel.popularMovieLiveData.observe(requireActivity(), {
             moviePopularAdapter.setData(it)
             movieRoomViewModel.insert(it)
-            skeletonScreen.hide()
+            (activity as NewMovieActivity).hideSkeleton()
             binding.loadForMoreMovies.visibility = View.GONE
 
         })
-    }
-
-    private fun setSkeleton() {
-        skeletonScreen = Skeleton.bind(binding.root)
-            .load(R.layout.skeleton_item_movie_popular)
-            .shimmer(true)
-            .duration(2000)
-            .show()
     }
 
     private fun setupAdapter() {
