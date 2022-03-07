@@ -10,6 +10,7 @@ import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
+import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
@@ -33,12 +34,13 @@ class PeopleDetailsActivity : AppCompatActivity() {
         peopleViewModel.getPeopleDetails(peopleId)
         peopleViewModel.peopleDetailsLiveData.observe(this, {
             skeletonScreen.hide()
-            setupInformationOnScreen(it)
+            if (it != null) {
+                setupInformationOnScreen(it)
+            }
         })
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
-            binding.peopleName.visibility = GONE
             binding.textBirthday.visibility = GONE
             binding.textPlaceOfBirthday.visibility = GONE
             binding.textPopularity.visibility = GONE
@@ -48,7 +50,6 @@ class PeopleDetailsActivity : AppCompatActivity() {
         binding.connectionOff.buttonRetryConnection.setOnClickListener {
             peopleViewModel.getPeopleDetails(peopleId)
             binding.connectionOff.layoutConnectionOff.visibility = GONE
-            binding.peopleName.visibility = VISIBLE
             binding.textBirthday.visibility = VISIBLE
             binding.textPlaceOfBirthday.visibility = VISIBLE
             binding.textPopularity.visibility = VISIBLE
@@ -61,13 +62,46 @@ class PeopleDetailsActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.move_to_left, R.anim.fade_out)
     }
 
-    private fun setupInformationOnScreen(it: People?) {
-        binding.peoplePhoto.load(PATH_IMAGE + it?.profile_path)
-        binding.peopleName.text = it?.name
-        binding.peopleBiography.text = it?.biography
-        binding.peopleBirthday.text = it?.birthday
-        binding.peoplePlaceOfBirth.text = it?.place_of_birth
-        binding.peoplePopularity.text = it?.popularity
+    private fun setupToolbar(it: People?) {
+        binding.toolbar.apply {
+            title = it?.name
+            setTitleTextColor(getColor(R.color.white))
+            setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+    }
+
+    private fun setupInformationOnScreen(it: People) {
+        binding.apply {
+            if (it.profile_path.isNullOrEmpty()) {
+                peoplePhoto.load(R.drawable.ic_baseline_person_24)
+            } else {
+                peoplePhoto.load(PATH_IMAGE + it.profile_path)
+            }
+            if (it.biography.isNullOrEmpty()) {
+                peopleBiography.text = getString(R.string.there_is_no_information)
+            } else {
+                peopleBiography.text = it.biography
+            }
+            if (it.birthday.isNullOrEmpty()) {
+                peopleBirthday.text = getString(R.string.there_is_no_information)
+            } else {
+                peopleBirthday.text = it.birthday
+            }
+            if (it.place_of_birth.isNullOrEmpty()) {
+                peoplePlaceOfBirth.text = getString(R.string.there_is_no_information)
+            } else {
+                peoplePlaceOfBirth.text = it.place_of_birth
+            }
+            if (it.popularity.isNullOrEmpty()) {
+                peoplePopularity.text = getString(R.string.there_is_no_information)
+            } else {
+                peoplePopularity.text = it.popularity
+            }
+            setupToolbar(it)
+        }
     }
 
     private fun setSkeleton() {
