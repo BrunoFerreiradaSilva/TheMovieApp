@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movieappferreira.ui.home.NewMovieActivity
+import com.example.movieappferreira.ui.home.HomeActivity
 import com.example.myapplication.databinding.ActivitySplashScreenBinding
 
 class SplashScreen : AppCompatActivity() {
@@ -22,7 +22,7 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun goToMoviePopularComplete() {
-        val intent = Intent(this@SplashScreen, NewMovieActivity::class.java)
+        val intent = Intent(this@SplashScreen, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -7,18 +7,18 @@ import androidx.navigation.ui.setupWithNavController
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityNewMovieBinding
+import com.example.myapplication.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class NewMovieActivity: AppCompatActivity() {
-    private lateinit var binding: ActivityNewMovieBinding
+class HomeActivity: AppCompatActivity() {
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var skeletonScreen: SkeletonScreen
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityNewMovieBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 

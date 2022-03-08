@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ethanhua.skeleton.Skeleton
-import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.interfaceclick.MovieClickListener
@@ -20,7 +18,7 @@ import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.pagination.EndlessRecyclerOnScrollListener
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
-import com.example.movieappferreira.ui.home.NewMovieActivity
+import com.example.movieappferreira.ui.home.HomeActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 
@@ -54,7 +52,7 @@ class MoviePopularCompleteFragment : Fragment() {
             movieRoomViewModel.allPerson.observe(requireActivity(), {
                 moviePopularAdapter.setData(it)
             })
-            (activity as NewMovieActivity).hideSkeleton()
+            (activity as HomeActivity).hideSkeleton()
         }
         setupAdapter()
 
@@ -62,14 +60,14 @@ class MoviePopularCompleteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as NewMovieActivity).setToolbar(getString(R.string.title_movie_popular))
+        (activity as HomeActivity).setToolbar(getString(R.string.title_movie_popular))
     }
 
     private fun observerRequest() {
         movieViewModel.popularMovieLiveData.observe(requireActivity(), {
             moviePopularAdapter.setData(it)
             movieRoomViewModel.insert(it)
-            (activity as NewMovieActivity).hideSkeleton()
+            (activity as HomeActivity).hideSkeleton()
             binding.loadForMoreMovies.visibility = View.GONE
 
         })

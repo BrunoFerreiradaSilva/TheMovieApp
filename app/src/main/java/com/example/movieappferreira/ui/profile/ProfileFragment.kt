@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.movieappferreira.ui.home.NewMovieActivity
+import com.example.movieappferreira.ui.home.HomeActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentNotificationsBinding
 
@@ -31,6 +28,6 @@ private lateinit var binding: FragmentNotificationsBinding
 
   override fun onResume() {
     super.onResume()
-    (activity as NewMovieActivity).setToolbar(getString(R.string.profile_title))
+    (activity as HomeActivity).setToolbar(getString(R.string.profile_title))
   }
 }
