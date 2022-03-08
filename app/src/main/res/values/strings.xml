@@ -49,5 +49,7 @@
     <string name="biography">Biography</string>
     <string name="profile_title">Profile</string>
     <string name="favorites_title">Favorites</string>
+    <string name="similar_movie">Similar movie</string>
+    <string name="cast">Cast</string>
 
 </resources>

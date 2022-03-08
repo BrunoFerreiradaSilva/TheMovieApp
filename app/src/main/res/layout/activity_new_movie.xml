@@ -31,6 +31,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         app:itemRippleColor="?attr/colorOnPrimary"
+        app:itemIconTint="@color/nav_color"
+        app:itemTextColor="@color/nav_color"
         android:background="@color/toolbar_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

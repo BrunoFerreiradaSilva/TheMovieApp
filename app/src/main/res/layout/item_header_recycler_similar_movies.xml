@@ -23,7 +23,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/overpass_regular"
         android:text="Overview"
-        android:textColor="@color/white"
+        android:textColor="@color/red_violet"
         android:textStyle="bold"
         android:textSize="22sp"
         android:layout_marginStart="4dp"
