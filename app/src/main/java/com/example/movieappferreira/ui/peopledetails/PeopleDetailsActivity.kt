@@ -15,9 +15,11 @@ import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPeopleDetailsBinding
-
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+@AndroidEntryPoint
 class PeopleDetailsActivity : AppCompatActivity() {
-    private lateinit var peopleViewModel: PeopleDetailsViewModel
+    @Inject lateinit var peopleViewModel: PeopleDetailsViewModel
     private lateinit var binding: ActivityPeopleDetailsBinding
     private lateinit var skeletonScreen: SkeletonScreen
 
@@ -30,7 +32,6 @@ class PeopleDetailsActivity : AppCompatActivity() {
 
         val peopleId = intent.getIntExtra(Constants.PEOPLE_ID, 0)
 
-        peopleViewModel = ViewModelProvider(this).get(PeopleDetailsViewModel::class.java)
         peopleViewModel.getPeopleDetails(peopleId)
         peopleViewModel.peopleDetailsLiveData.observe(this, {
             if (it != null) {

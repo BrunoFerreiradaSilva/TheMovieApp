@@ -21,11 +21,15 @@ import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
 import com.example.movieappferreira.ui.home.HomeActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MoviePopularCompleteFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val movieList: MutableList<MoviePopular> = mutableListOf()
-    private lateinit var movieViewModel: MovieViewModel
+    @Inject
+    lateinit var movieViewModel: MovieViewModel
     private val movieRoomViewModel: MovieRoomViewModel by viewModels {
         MovieViewModelFactory((activity?.application as MovieApplication).repository)
     }
@@ -45,7 +49,6 @@ class MoviePopularCompleteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         moviePopularAdapter =
             MoviePopularCompleteAdapter(requireContext(), movieList, getMovieItemClickListener())
-        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.getPopularMovies(Constants.PAGE)
         observerRequest()
         if (!ConnectionOn().isConnected(requireContext())) {

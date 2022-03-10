@@ -4,14 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movieappferreira.data.MovieRepositoryImp
+import com.example.movieappferreira.domain.MovieRepository
 import com.example.movieappferreira.model.MoviePopular
-import com.example.movieappferreira.rest.repository.MovieRepository
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class MovieViewModel : ViewModel() {
-    private val repository: MovieRepository by lazy {
-        MovieRepository()
-    }
+class MovieViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")

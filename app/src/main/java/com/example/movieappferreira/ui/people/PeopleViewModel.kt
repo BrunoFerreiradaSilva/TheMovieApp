@@ -4,15 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movieappferreira.data.MovieRepositoryImp
+import com.example.movieappferreira.data.PeopleRepositoryImp
+import com.example.movieappferreira.domain.MovieRepository
+import com.example.movieappferreira.domain.PeopleRepository
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
-import com.example.movieappferreira.rest.repository.MovieRepository
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class PeopleViewModel : ViewModel() {
-    private val repository: MovieRepository by lazy {
-        MovieRepository()
-    }
+class PeopleViewModel @Inject constructor(private val repository: MovieRepository, private val peopleRepository: PeopleRepository) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")
@@ -30,7 +31,7 @@ class PeopleViewModel : ViewModel() {
             val movieDetails = repository.getDetailsMovie(movieID)
             detailsMovieAndPeople.value?.first?.postValue(movieDetails)
 
-            val people = repository.getPeopleMovieList(movieID)
+            val people = peopleRepository.getPeopleMovieList(movieID)
             detailsMovieAndPeople.value?.second?.postValue(people)
         }
     }

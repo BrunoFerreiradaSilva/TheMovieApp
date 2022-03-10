@@ -9,7 +9,11 @@ import com.ethanhua.skeleton.SkeletonScreen
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity: AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var skeletonScreen: SkeletonScreen

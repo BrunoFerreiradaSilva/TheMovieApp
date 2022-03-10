@@ -27,11 +27,14 @@ import com.example.movieappferreira.ui.people.PeopleAdapter
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieSimilarBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
-    private lateinit var peopleViewModel: PeopleViewModel
-    private lateinit var movieSimilarViewModel: MovieSimilarViewModel
+    @Inject lateinit var peopleViewModel: PeopleViewModel
+    @Inject lateinit var movieSimilarViewModel: MovieSimilarViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
@@ -50,9 +53,6 @@ class MovieSimilarActivity : AppCompatActivity() {
         setSkeleton()
 
         movieId = intent.getIntExtra(ID_MOVIE, 0)
-
-        initViewModel()
-
 
         observeRequest()
 
@@ -92,11 +92,6 @@ class MovieSimilarActivity : AppCompatActivity() {
             movieSimilarAdapter.setData(it)
             skeletonScreen.hide()
         })
-    }
-
-    private fun initViewModel() {
-        peopleViewModel = ViewModelProvider(this).get(PeopleViewModel::class.java)
-        movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
     }
 
     override fun finish() {

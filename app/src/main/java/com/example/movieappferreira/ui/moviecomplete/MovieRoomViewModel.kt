@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.rest.repository.MovieRoomRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieRoomViewModel(private val repository: MovieRoomRepository): ViewModel() {
+class MovieRoomViewModel @Inject constructor (private val repository: MovieRoomRepository): ViewModel() {
     val allPerson: LiveData<MutableList<MoviePopular>> = repository.allPerson.asLiveData()
 
     fun insert(moviePopular: MutableList<MoviePopular>) = viewModelScope.launch {

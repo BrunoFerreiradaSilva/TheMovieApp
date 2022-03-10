@@ -5,8 +5,9 @@ import com.example.movieappferreira.database.MovieDAO
 import com.example.movieappferreira.model.Movie
 import com.example.movieappferreira.model.MoviePopular
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class MovieRoomRepository(private val movieDAO: MovieDAO){
+class MovieRoomRepository @Inject constructor(private val movieDAO: MovieDAO){
     val allPerson: Flow<MutableList<MoviePopular>> = movieDAO.getAllPerson()
 
     @Suppress("RedundantSuspendModifier")
