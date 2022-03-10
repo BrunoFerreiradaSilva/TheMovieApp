@@ -1,10 +1,9 @@
 package com.example.movieappferreira.di
 
-import com.example.movieappferreira.data.MovieRepositoryImp
-import com.example.movieappferreira.data.PeopleRepositoryImp
-import com.example.movieappferreira.domain.MovieRepository
-import com.example.movieappferreira.domain.PeopleRepository
-import com.example.movieappferreira.model.People
+import com.example.movieappferreira.data.repository.MovieRepositoryImp
+import com.example.movieappferreira.data.repository.PeopleRepositoryImp
+import com.example.movieappferreira.data.domain.MovieRepository
+import com.example.movieappferreira.data.domain.PeopleRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

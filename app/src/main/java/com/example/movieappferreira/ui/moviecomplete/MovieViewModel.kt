@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movieappferreira.data.MovieRepositoryImp
-import com.example.movieappferreira.domain.MovieRepository
+import com.example.movieappferreira.data.domain.MovieRepository
 import com.example.movieappferreira.model.MoviePopular
 import kotlinx.coroutines.*
 import javax.inject.Inject

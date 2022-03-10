@@ -9,11 +9,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
-import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.pagination.EndlessRecyclerOnScrollListener
 import com.example.movieappferreira.rest.service.ConnectionOn

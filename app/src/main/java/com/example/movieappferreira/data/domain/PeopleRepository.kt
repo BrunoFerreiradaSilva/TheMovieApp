@@ -1,4 +1,4 @@
-package com.example.movieappferreira.domain
+package com.example.movieappferreira.data.domain
 
 import com.example.movieappferreira.model.People
 

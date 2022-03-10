@@ -1,6 +1,6 @@
-package com.example.movieappferreira.data
+package com.example.movieappferreira.data.repository
 
-import com.example.movieappferreira.domain.PeopleRepository
+import com.example.movieappferreira.data.domain.PeopleRepository
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.retrofit.RetrofitInitializer
 

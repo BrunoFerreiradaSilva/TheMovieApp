@@ -1,6 +1,6 @@
-package com.example.movieappferreira.data
+package com.example.movieappferreira.data.repository
 
-import com.example.movieappferreira.domain.MovieRepository
+import com.example.movieappferreira.data.domain.MovieRepository
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.model.MovieSimilar

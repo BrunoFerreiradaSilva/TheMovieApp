@@ -7,8 +7,6 @@ import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -18,7 +16,7 @@ import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People

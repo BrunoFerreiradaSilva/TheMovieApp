@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.People
 import com.example.myapplication.R
 import com.example.myapplication.databinding.RecyclerItemPepopleBinding
