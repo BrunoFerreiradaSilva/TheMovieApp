@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_movie"
-        android:name="com.example.movieappferreira.ui.movie.MovieFragment"
+        android:name="com.example.movieappferreira.ui.moviecomplete.MoviePopularCompleteFragment"
         android:label="@string/title_movie"
-        tools:layout="@layout/fragment_movie" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_search_movie"
-        android:name="com.example.movieappferreira.ui.search.SearchMovieFragment"
+        android:name="com.example.movieappferreira.ui.favorites.FavoriteFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.movieappferreira.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_notifications" />
 </navigation>

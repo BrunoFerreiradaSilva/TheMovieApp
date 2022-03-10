@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.ImageDownload
-import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MoviePopular
 import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBinding
 

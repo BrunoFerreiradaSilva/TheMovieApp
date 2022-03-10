@@ -6,15 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.base.Constants.TYPE_HEADER
-import com.example.movieappferreira.base.Constants.TYPE_ITEM
-import com.example.movieappferreira.base.Constants.TYPE_SECTION
-import com.example.movieappferreira.interfaceclick.MovieClickListener
-import com.example.movieappferreira.model.MovieDetails
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MovieSimilar
-import com.example.movieappferreira.model.People
 import com.example.myapplication.databinding.RecyclerItemMovieSimilarBinding
-import com.example.myapplication.databinding.RecyclerItemPepopleBinding
 
 class MovieSimilarAdapter(
     private var movieSimilar: MutableList<MovieSimilar>,

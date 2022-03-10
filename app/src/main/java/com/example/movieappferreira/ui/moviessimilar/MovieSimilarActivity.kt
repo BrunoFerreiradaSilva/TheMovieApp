@@ -7,7 +7,6 @@ import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -17,7 +16,7 @@ import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.interfaceclick.MovieClickListener
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
@@ -26,44 +25,34 @@ import com.example.movieappferreira.ui.people.PeopleAdapter
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieSimilarBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
-    private lateinit var peopleViewModel: PeopleViewModel
-    private lateinit var movieSimilarViewModel: MovieSimilarViewModel
+    @Inject lateinit var peopleViewModel: PeopleViewModel
+    @Inject lateinit var movieSimilarViewModel: MovieSimilarViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
     private val peopleAdapter: PeopleAdapter = PeopleAdapter(this,peopleList,getPeopleDetails())
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
+    private var movieId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         binding = ActivityMovieSimilarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSkeleton()
 
-        val movieId = intent.getIntExtra(ID_MOVIE, 0)
+        movieId = intent.getIntExtra(ID_MOVIE, 0)
 
-        peopleViewModel = ViewModelProvider(this).get(PeopleViewModel::class.java)
-        peopleViewModel.getMovieAndPeopleDetails(movieId)
-        peopleViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
-            setupInformation(it)
-            skeletonScreen.hide()
-        })
-        peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this,{
-            peopleAdapter.setData(it)
-            skeletonScreen.hide()
-        })
-
-        movieSimilarViewModel = ViewModelProvider(this).get(MovieSimilarViewModel::class.java)
-        movieSimilarViewModel.getMovieSimilar(movieId)
-        movieSimilarViewModel.movieSimilarDetails.observe(this, {
-            movieSimilarAdapter.setData(it)
-            skeletonScreen.hide()
-        })
+        observeRequest()
 
         if (!ConnectionOn().isConnected(this)) {
             binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
@@ -80,6 +69,27 @@ class MovieSimilarActivity : AppCompatActivity() {
         }
         setupAdapter()
         setupAdapterPeople()
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        peopleViewModel.getMovieAndPeopleDetails(movieId)
+        movieSimilarViewModel.getMovieSimilar(movieId)
+    }
+
+    private fun observeRequest() {
+        peopleViewModel.detailsMovieAndPeople.value?.first?.observe(this, {
+            setupInformation(it)
+        })
+        peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this, {
+            peopleAdapter.setData(it)
+        })
+        movieSimilarViewModel.movieSimilarDetails.observe(this, {
+            movieSimilarAdapter.setData(it)
+            skeletonScreen.hide()
+        })
     }
 
     override fun finish() {
@@ -97,8 +107,20 @@ class MovieSimilarActivity : AppCompatActivity() {
 
     private fun setupInformation(movieDetails: MovieDetails?){
         binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
-        binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.original_title
+        binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.overview
+        setupToolbar(movieDetails)
 
+    }
+
+    private fun setupToolbar(movieDetails: MovieDetails?) {
+        binding.toolbar.apply {
+            title = movieDetails?.original_title
+            setTitleTextColor(getColor(R.color.white))
+            setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
     }
 
     private fun setupAdapter() {

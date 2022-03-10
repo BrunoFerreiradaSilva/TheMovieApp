@@ -9,15 +9,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:drawable/screen_background_dark_transparent">
+        android:background="@color/black3">
 
         <ImageView
             android:id="@+id/image_item_movie_similar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            app:layout_constraintEnd_toStartOf="@id/name_item_movie_similar"
+            android:layout_height="80dp"
+            android:contentDescription="@string/image_item_for_movie_similar"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/image_item_for_movie_similar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/name_item_movie_similar"
@@ -25,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:fontFamily="@font/overpass_regular"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_item_movie_similar"
