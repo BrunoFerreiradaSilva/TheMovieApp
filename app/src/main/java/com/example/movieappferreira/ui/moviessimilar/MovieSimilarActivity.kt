@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -128,11 +129,11 @@ class MovieSimilarActivity : AppCompatActivity() {
         peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this, {
             peopleList.addAll(it)
             peopleAdapter.submitList(peopleList)
+            skeletonScreen.hide()
         })
         movieSimilarViewModel.movieSimilarDetails.observe(this, {
             movieSimilarList.addAll(it)
             movieSimilarAdapter.submitList(movieSimilarList)
-            skeletonScreen.hide()
         })
     }
 

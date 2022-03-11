@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.model.MovieDetails
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBinding
 
 class FavoriteAdapter(
     private val context: Context,
-    private val listMovies: MutableList<MovieDetails>?
+    private val listMovies: MutableList<MovieDetails>?,
+    private val listener:MovieClickListener
 ) :
     ListAdapter<MovieDetails,FavoriteAdapter.ItemRecycler>(FavoriteAdapter) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteAdapter.ItemRecycler {
@@ -37,6 +39,9 @@ class FavoriteAdapter(
         holder.apply {
             if (moviePopularList != null) {
                 binding(moviePopularList)
+                holder.itemView.setOnClickListener {
+                    listener.onItemMovieClicked(moviePopularList.id)
+                }
             }
         }
     }
