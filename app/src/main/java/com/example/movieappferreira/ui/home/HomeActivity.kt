@@ -3,7 +3,6 @@ package com.example.movieappferreira.ui.home
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ethanhua.skeleton.Skeleton
@@ -11,12 +10,9 @@ import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
 import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
-import com.example.movieappferreira.utils.Observers
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,12 +36,6 @@ class HomeActivity: AppCompatActivity() {
         navView.setupWithNavController(navController)
         showSkeleton()
 
-    }
-
-    fun getAllFavorites(){
-        movieRoomViewModel.allPerson.observe(this){
-
-        }
     }
 
     private fun showSkeleton() {
