@@ -4,23 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
+import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
+import com.example.movieappferreira.extensions.gone
+import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
+import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
+import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
 import com.example.movieappferreira.ui.people.PeopleAdapter
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R
@@ -40,6 +47,9 @@ class MovieSimilarActivity : AppCompatActivity() {
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
     private var movieId = 0
+    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
+        MovieViewModelFactory((application as MovieApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +65,7 @@ class MovieSimilarActivity : AppCompatActivity() {
         observeRequest()
 
         if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
+            binding.connectionOff.layoutConnectionOff.visible()
             skeletonScreen.hide()
         }
 
@@ -63,7 +73,7 @@ class MovieSimilarActivity : AppCompatActivity() {
             if (ConnectionOn().isConnected(this)) {
                 peopleViewModel.getMovieAndPeopleDetails(movieId)
                 movieSimilarViewModel.getMovieSimilar(movieId)
-                binding.connectionOff.layoutConnectionOff.visibility = GONE
+                binding.connectionOff.layoutConnectionOff.gone()
                 skeletonScreen.show()
             }
         }
@@ -71,12 +81,44 @@ class MovieSimilarActivity : AppCompatActivity() {
         setupAdapterPeople()
 
 
+
+    }
+
+    private fun favoriteMovie(movieDetails: MovieDetails?) {
+        binding.layoutItemHeader.favorite.setOnClickListener {
+            binding.layoutItemHeader.apply {
+                favorite.gone()
+                favoriteDone.visible()
+                if (movieDetails != null) {
+                    movieRoomViewModel.insert(movieDetails)
+                }
+            }
+        }
+    }
+
+    private fun removeFavorite(movieDetails: MovieDetails?) {
+        binding.layoutItemHeader.favoriteDone.setOnClickListener {
+            binding.layoutItemHeader.apply {
+                favoriteDone.gone()
+                favorite.visible()
+                if (movieDetails != null) {
+                    movieRoomViewModel.remove(movieDetails.id)
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         peopleViewModel.getMovieAndPeopleDetails(movieId)
         movieSimilarViewModel.getMovieSimilar(movieId)
+        movieRoomViewModel.allPerson.observe(this){
+            for(item in 0 until  it.size){
+                if(movieId == it[item].id){
+                    binding.layoutItemHeader.favoriteDone.visible()
+                }
+            }
+        }
     }
 
     private fun observeRequest() {
@@ -109,7 +151,8 @@ class MovieSimilarActivity : AppCompatActivity() {
         binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
         binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.overview
         setupToolbar(movieDetails)
-
+        favoriteMovie(movieDetails)
+        removeFavorite(movieDetails)
     }
 
     private fun setupToolbar(movieDetails: MovieDetails?) {
