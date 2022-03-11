@@ -3,6 +3,8 @@ package com.example.movieappferreira.ui.moviessimilar
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
@@ -14,16 +16,22 @@ class MovieSimilarAdapter(
     private var movieSimilar: MutableList<MovieSimilar>,
     private val context: Context,
     private val listener: MovieClickListener
-
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
-) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+) : ListAdapter<MovieSimilar,MovieSimilarAdapter.ItemMovieSimilar>(MovieSimilarAdapter) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieSimilarAdapter.ItemMovieSimilar {
         val layoutInflater = LayoutInflater.from(context)
         val recyclerItemMovieSimilar: RecyclerItemMovieSimilarBinding =
             RecyclerItemMovieSimilarBinding.inflate(layoutInflater, parent, false)
         return ItemMovieSimilar(recyclerItemMovieSimilar)
     }
-
+    override fun onBindViewHolder(holder: ItemMovieSimilar, position: Int) {
+        val movieSimilar = movieSimilar[position]
+        holder.apply {
+            binding(movieSimilar)
+            itemView.setOnClickListener {
+                listener.onItemMovieClicked(movieSimilar.id)
+            }
+        }
+    }
 
     inner class ItemMovieSimilar(private val recyclerItemMovieSimilarBinding: RecyclerItemMovieSimilarBinding) :
         RecyclerView.ViewHolder(recyclerItemMovieSimilarBinding.root) {
@@ -37,21 +45,13 @@ class MovieSimilarAdapter(
         return movieSimilar.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ItemMovieSimilar) {
-            val movieSimilar = movieSimilar[position]
-            holder.apply {
-                binding(movieSimilar)
-                itemView.setOnClickListener {
-                    listener.onItemMovieClicked(movieSimilar.id)
-                }
-            }
+    private companion object : DiffUtil.ItemCallback<MovieSimilar>() {
+        override fun areItemsTheSame(oldItem: MovieSimilar, newItem: MovieSimilar): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MovieSimilar, newItem: MovieSimilar): Boolean {
+            return oldItem == newItem
         }
     }
-
-    fun setData(movieSimilar: MutableList<MovieSimilar>) {
-        this.movieSimilar.addAll(movieSimilar)
-        notifyDataSetChanged()
-    }
-
 }

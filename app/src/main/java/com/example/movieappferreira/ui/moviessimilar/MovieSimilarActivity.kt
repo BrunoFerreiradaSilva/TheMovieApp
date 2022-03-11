@@ -126,10 +126,12 @@ class MovieSimilarActivity : AppCompatActivity() {
             setupInformation(it)
         })
         peopleViewModel.detailsMovieAndPeople.value?.second?.observe(this, {
-            peopleAdapter.setData(it)
+            peopleList.addAll(it)
+            peopleAdapter.submitList(peopleList)
         })
         movieSimilarViewModel.movieSimilarDetails.observe(this, {
-            movieSimilarAdapter.setData(it)
+            movieSimilarList.addAll(it)
+            movieSimilarAdapter.submitList(movieSimilarList)
             skeletonScreen.hide()
         })
     }

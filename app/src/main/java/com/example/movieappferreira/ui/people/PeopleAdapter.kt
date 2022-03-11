@@ -3,9 +3,12 @@ package com.example.movieappferreira.ui.people
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
+import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.People
 import com.example.myapplication.R
@@ -16,37 +19,30 @@ class PeopleAdapter(
     private val context: Context,
     private val listPeople: MutableList<People>,
     private val listener: MovieClickListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+) : ListAdapter<People,PeopleAdapter.ItemPeople>(PeopleAdapter) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleAdapter.ItemPeople {
         val layoutInflater = LayoutInflater.from(context)
         val recyclerItemPeopleBinding =
             RecyclerItemPepopleBinding.inflate(layoutInflater, parent, false)
         return ItemPeople(recyclerItemPeopleBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemPeople, position: Int) {
         val people = listPeople[position]
-        if (holder is ItemPeople) {
-            holder.apply {
-                try {
-                    binding(people)
-                } catch (e: NullPointerException) {
-                    return
-                }
-                itemView.setOnClickListener {
-                    listener.onItemMovieClicked(people.id)
-                }
+        holder.apply {
+            try {
+                binding(people)
+            } catch (e: NullPointerException) {
+                return
+            }
+            itemView.setOnClickListener {
+                listener.onItemMovieClicked(people.id)
             }
         }
     }
 
     override fun getItemCount(): Int {
         return listPeople.size
-    }
-
-    fun setData(listPeople: MutableList<People>) {
-        this.listPeople.addAll(listPeople)
-        notifyDataSetChanged()
     }
 
     inner class ItemPeople(private val recyclerItemPeopleBinding: RecyclerItemPepopleBinding
@@ -60,5 +56,16 @@ class PeopleAdapter(
             recyclerItemPeopleBinding.namePeople.text = people.name
         }
     }
+    private companion object : DiffUtil.ItemCallback<People>() {
+        override fun areItemsTheSame(oldItem: People, newItem: People): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: People, newItem: People): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+
 
 }

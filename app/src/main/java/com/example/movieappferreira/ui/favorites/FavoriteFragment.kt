@@ -33,26 +33,26 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as HomeActivity).setToolbar(getString(R.string.favorites_title))
 
-        binding.recyclerFavorite.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3)
-            adapter = favoriteAdapter
-        }
 
         movieRoomViewModel.allPerson.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 binding.layoutNoHaveMovie.visible()
             } else {
                 listMovie.addAll(it)
+                favoriteAdapter.submitList(listMovie)
             }
         }
 
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as HomeActivity).setToolbar(getString(R.string.favorites_title))
+        binding.recyclerFavorite.apply {
+            layoutManager = GridLayoutManager(requireContext(), 3)
+            adapter = favoriteAdapter
+        }
 
     }
 

@@ -29,22 +29,20 @@ class MoviePopularCompleteFragment : Fragment() {
     lateinit var movieViewModel: MovieViewModel
 
     private lateinit var moviePopularAdapter: MoviePopularCompleteAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         moviePopularAdapter =
             MoviePopularCompleteAdapter(requireContext(), movieList, getMovieItemClickListener())
-        movieViewModel.getPopularMovies(Constants.PAGE)
         observerRequest()
         setupAdapter()
 
@@ -53,6 +51,7 @@ class MoviePopularCompleteFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as HomeActivity).setToolbar(getString(R.string.title_movie_popular))
+        movieViewModel.getPopularMovies(Constants.PAGE)
     }
 
     private fun observerRequest() {
