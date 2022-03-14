@@ -6,8 +6,8 @@ tecnologias utilizadas:
 - Navigation
 - ViewBinding
 - MVVM
-- RestAPI(Retrofit+Corroutines)
-- Room + Corroutines
+- RestAPI(Retrofit+Coroutines)
+- Room + Coroutines
 - Coil
 - ConstrantLayout
 - ListAdapter
