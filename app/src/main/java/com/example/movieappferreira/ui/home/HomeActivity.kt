@@ -8,8 +8,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.application.MovieApplication
-import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
-import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
+import com.example.movieappferreira.database.MovieRoomViewModel
+import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView

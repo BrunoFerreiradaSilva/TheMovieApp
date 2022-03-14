@@ -2,14 +2,10 @@ package com.example.movieappferreira.ui.moviessimilar
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -27,8 +23,8 @@ import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
-import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
-import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
+import com.example.movieappferreira.database.MovieRoomViewModel
+import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.movieappferreira.ui.people.PeopleAdapter
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
 import com.example.myapplication.R

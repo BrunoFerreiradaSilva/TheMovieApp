@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
@@ -13,12 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
-import com.example.movieappferreira.extensions.gone
 import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.ui.home.HomeActivity
-import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
-import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
+import com.example.movieappferreira.database.MovieRoomViewModel
+import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.R

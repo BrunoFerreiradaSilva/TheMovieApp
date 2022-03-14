@@ -1,4 +1,4 @@
-package com.example.movieappferreira.ui.moviecomplete
+package com.example.movieappferreira.database
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

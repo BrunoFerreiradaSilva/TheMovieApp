@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">The Movie</string>
     <string name="title_movie">Popular movies</string>
     <string name="title_search">Favorites</string>
     <string name="title_profile">Profile</string>
