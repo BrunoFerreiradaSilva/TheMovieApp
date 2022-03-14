@@ -56,7 +56,8 @@ class MoviePopularCompleteFragment : Fragment() {
 
     private fun observerRequest() {
         movieViewModel.popularMovieLiveData.observe(requireActivity(), {
-            moviePopularAdapter.setData(it)
+            movieList.addAll(it)
+            moviePopularAdapter.submitList(movieList)
             (activity as HomeActivity).hideSkeleton()
             binding.loadForMoreMovies.visibility = View.GONE
 

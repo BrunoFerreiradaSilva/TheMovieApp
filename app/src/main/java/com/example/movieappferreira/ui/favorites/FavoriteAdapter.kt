@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.model.MovieDetails
+import com.example.movieappferreira.utils.BaseItemCallback
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBinding
 
@@ -17,7 +18,7 @@ class FavoriteAdapter(
     private val listMovies: MutableList<MovieDetails>?,
     private val listener:MovieClickListener
 ) :
-    ListAdapter<MovieDetails,FavoriteAdapter.ItemRecycler>(FavoriteAdapter) {
+    ListAdapter<MovieDetails,FavoriteAdapter.ItemRecycler>(BaseItemCallback<MovieDetails>()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteAdapter.ItemRecycler {
         val layoutInflater = LayoutInflater.from(context)
         val recyclerItemMoviePopularCompleteBinding: RecyclerItemMoviePopularCompleteBinding =
@@ -43,16 +44,6 @@ class FavoriteAdapter(
                     listener.onItemMovieClicked(moviePopularList.id)
                 }
             }
-        }
-    }
-
-    private companion object : DiffUtil.ItemCallback<MovieDetails>() {
-        override fun areItemsTheSame(oldItem: MovieDetails, newItem: MovieDetails): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: MovieDetails, newItem: MovieDetails): Boolean {
-            return oldItem == newItem
         }
     }
 }
