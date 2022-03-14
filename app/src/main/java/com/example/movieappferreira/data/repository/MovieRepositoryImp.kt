@@ -7,12 +7,12 @@ import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.rest.retrofit.RetrofitInitializer
 
 
-class MovieRepositoryImp  : MovieRepository {
+class MovieRepositoryImp : MovieRepository {
 
     override suspend fun getMoviePopular(page: Int): MutableList<MoviePopular> {
-        return try{
+        return try {
             RetrofitInitializer.movieService.getPopularMovie(page).results
-        }catch (e:RuntimeException){
+        } catch (e: RuntimeException) {
             mutableListOf()
         }
     }
@@ -20,7 +20,7 @@ class MovieRepositoryImp  : MovieRepository {
     override suspend fun getDetailsMovie(movieID: Int): MovieDetails? {
         return try {
             RetrofitInitializer.movieService.getMovieDetails(movieID)
-        }catch (e:RuntimeException){
+        } catch (e: RuntimeException) {
             null
         }
     }
@@ -28,7 +28,7 @@ class MovieRepositoryImp  : MovieRepository {
     override suspend fun getSimilarMovies(movieID: Int): MutableList<MovieSimilar> {
         return try {
             RetrofitInitializer.movieService.getSimilarMovies(movieID).results
-        }catch (e:RuntimeException){
+        } catch (e: RuntimeException) {
             mutableListOf()
         }
     }

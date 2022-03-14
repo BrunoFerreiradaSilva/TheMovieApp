@@ -12,11 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
+import com.example.movieappferreira.database.MovieRoomViewModel
+import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.ui.home.HomeActivity
-import com.example.movieappferreira.database.MovieRoomViewModel
-import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.R
@@ -25,7 +25,7 @@ import com.example.myapplication.databinding.FragmentDashboardBinding
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val favoriteAdapter: FavoriteAdapter by lazy {
-        FavoriteAdapter(requireContext(),listMovie,getMovieItemClickListener())
+        FavoriteAdapter(requireContext(), listMovie, getMovieItemClickListener())
     }
     private val movieRoomViewModel: MovieRoomViewModel by viewModels {
         MovieViewModelFactory((activity?.application as MovieApplication).repository)
@@ -39,6 +39,7 @@ class FavoriteFragment : Fragment() {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as HomeActivity).setToolbar(getString(R.string.favorites_title))
@@ -60,10 +61,6 @@ class FavoriteFragment : Fragment() {
                 favoriteAdapter.submitList(it)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun getMovieItemClickListener(): MovieClickListener {

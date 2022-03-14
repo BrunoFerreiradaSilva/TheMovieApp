@@ -8,21 +8,29 @@ import com.example.movieappferreira.data.domain.MovieRepository
 import com.example.movieappferreira.data.domain.PeopleRepository
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PeopleViewModel @Inject constructor(private val repository: MovieRepository, private val peopleRepository: PeopleRepository) : ViewModel() {
+class PeopleViewModel @Inject constructor(
+    private val repository: MovieRepository,
+    private val peopleRepository: PeopleRepository
+) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")
     }
 
-    val detailsMovieAndPeople: LiveData<Pair<MutableLiveData<MovieDetails?>,MutableLiveData<MutableList<People>>>>
+    val detailsMovieAndPeople: LiveData<Pair<MutableLiveData<MovieDetails?>, MutableLiveData<MutableList<People>>>>
         get() = _detailsMovieAndPeople
-    private val _detailsMovieAndPeople = MutableLiveData(Pair(
-        MutableLiveData<MovieDetails?>(),
-        MutableLiveData<MutableList<People>>()
-    ))
+    private val _detailsMovieAndPeople = MutableLiveData(
+        Pair(
+            MutableLiveData<MovieDetails?>(),
+            MutableLiveData<MutableList<People>>()
+        )
+    )
 
     fun getMovieAndPeopleDetails(movieID: Int) {
         CoroutineScope(Dispatchers.IO).launch(handler) {

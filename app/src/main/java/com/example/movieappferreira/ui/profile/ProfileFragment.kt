@@ -19,7 +19,7 @@ private lateinit var binding: FragmentNotificationsBinding
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     binding = FragmentNotificationsBinding.inflate(layoutInflater)
 
 

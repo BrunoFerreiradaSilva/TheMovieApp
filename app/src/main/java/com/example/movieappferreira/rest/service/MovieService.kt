@@ -5,7 +5,6 @@ import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.results.MoviePopularResult
-import com.example.movieappferreira.results.MovieResult
 import com.example.movieappferreira.results.MovieSimilarResults
 import com.example.movieappferreira.results.PeopleMovieResult
 import retrofit2.http.GET

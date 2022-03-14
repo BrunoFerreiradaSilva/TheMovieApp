@@ -6,12 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.movieappferreira.model.MovieDetails
-import com.example.movieappferreira.model.MoviePopular
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = [MovieDetails::class], version = 1, exportSchema = false)
-abstract class MovieDataBase: RoomDatabase() {
+abstract class MovieDataBase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDAO
 
