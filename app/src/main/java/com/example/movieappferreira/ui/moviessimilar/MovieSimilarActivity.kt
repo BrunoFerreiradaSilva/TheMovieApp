@@ -39,6 +39,7 @@ class MovieSimilarActivity : AppCompatActivity() {
     lateinit var peopleViewModel: PeopleViewModel
     @Inject
     lateinit var movieSimilarViewModel: MovieSimilarViewModel
+    @Inject lateinit var movieRoomViewModel: MovieRoomViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
@@ -46,9 +47,6 @@ class MovieSimilarActivity : AppCompatActivity() {
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
     private var movieId = 0
-    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
-        MovieViewModelFactory((application as MovieApplication).repository)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

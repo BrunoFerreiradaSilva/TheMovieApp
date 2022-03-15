@@ -9,9 +9,5 @@ import kotlinx.coroutines.SupervisorJob
 
 @HiltAndroidApp
 class MovieApplication : Application() {
-    private val applicationScope = CoroutineScope(SupervisorJob())
-
-    private val database by lazy { MovieDataBase.getDatabase(this, applicationScope) }
-    val repository by lazy { MovieRoomRepository(database.movieDao()) }
 
 }

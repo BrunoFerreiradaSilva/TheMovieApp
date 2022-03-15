@@ -21,15 +21,16 @@ import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDashboardBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val favoriteAdapter: FavoriteAdapter by lazy {
         FavoriteAdapter(requireContext(), listMovie, getMovieItemClickListener())
     }
-    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
-        MovieViewModelFactory((activity?.application as MovieApplication).repository)
-    }
+    @Inject lateinit var movieRoomViewModel: MovieRoomViewModel
     private val listMovie = mutableListOf<MovieDetails>()
     override fun onCreateView(
         inflater: LayoutInflater,

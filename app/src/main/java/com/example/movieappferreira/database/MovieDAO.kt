@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.movieappferreira.model.MovieDetails
+import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 
 @Dao

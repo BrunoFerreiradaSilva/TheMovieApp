@@ -32,7 +32,6 @@ abstract class MovieDataBase : RoomDatabase() {
 
         fun getDatabase(
             context: Context,
-            scope: CoroutineScope
         ): MovieDataBase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -41,7 +40,6 @@ abstract class MovieDataBase : RoomDatabase() {
                     "movie_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(MovieCallBack(scope))
                     .build()
                 INSTANCE = instance
                 instance
