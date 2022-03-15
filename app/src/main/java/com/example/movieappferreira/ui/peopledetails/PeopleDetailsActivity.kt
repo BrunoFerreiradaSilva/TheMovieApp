@@ -1,8 +1,6 @@
 package com.example.movieappferreira.ui.peopledetails
 
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.ethanhua.skeleton.Skeleton
@@ -10,7 +8,6 @@ import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.model.People
-import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPeopleDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,22 +37,6 @@ class PeopleDetailsActivity : AppCompatActivity() {
             skeletonScreen.hide()
         })
 
-        if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visibility = VISIBLE
-            binding.textBirthday.visibility = GONE
-            binding.textPlaceOfBirthday.visibility = GONE
-            binding.textPopularity.visibility = GONE
-            skeletonScreen.hide()
-        }
-
-        binding.connectionOff.buttonRetryConnection.setOnClickListener {
-            peopleViewModel.getPeopleDetails(peopleId)
-            binding.connectionOff.layoutConnectionOff.visibility = GONE
-            binding.textBirthday.visibility = VISIBLE
-            binding.textPlaceOfBirthday.visibility = VISIBLE
-            binding.textPopularity.visibility = VISIBLE
-            skeletonScreen.show()
-        }
     }
 
     override fun finish() {

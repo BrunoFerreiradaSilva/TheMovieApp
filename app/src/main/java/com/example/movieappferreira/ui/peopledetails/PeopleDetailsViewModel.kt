@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieappferreira.data.domain.PeopleRepository
 import com.example.movieappferreira.model.People
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-class PeopleDetailsViewModel @Inject constructor(private val repository: PeopleRepository): ViewModel() {
+class PeopleDetailsViewModel @Inject constructor(private val repository: PeopleRepository) :
+    ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")
@@ -19,14 +21,10 @@ class PeopleDetailsViewModel @Inject constructor(private val repository: PeopleR
         get() = _peopleDetailsLiveData
     private val _peopleDetailsLiveData = MutableLiveData<People?>()
 
-    fun getPeopleDetails(movieID: Int){
-        CoroutineScope(Dispatchers.IO).launch(handler) {
-            try{
-                val people = repository.getPeopleDetails(movieID)
-                _peopleDetailsLiveData.postValue(people)
-            }catch (t:Throwable){
-                return@launch
-            }
+    fun getPeopleDetails(movieID: Int) {
+        viewModelScope.launch(handler) {
+            val people = repository.getPeopleDetails(movieID)
+            _peopleDetailsLiveData.postValue(people)
         }
     }
 }

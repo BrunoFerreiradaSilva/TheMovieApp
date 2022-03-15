@@ -19,7 +19,6 @@ import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
-import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.movieappferreira.ui.people.PeopleAdapter
 import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
@@ -32,11 +31,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
+
     @Inject
     lateinit var peopleViewModel: PeopleViewModel
+
     @Inject
     lateinit var movieSimilarViewModel: MovieSimilarViewModel
-    @Inject lateinit var roomViewModel: RoomViewModel
+    @Inject
+    lateinit var roomViewModel: RoomViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
@@ -58,19 +60,6 @@ class MovieSimilarActivity : AppCompatActivity() {
 
         observeRequest()
 
-        if (!ConnectionOn().isConnected(this)) {
-            binding.connectionOff.layoutConnectionOff.visible()
-            skeletonScreen.hide()
-        }
-
-        binding.connectionOff.buttonRetryConnection.setOnClickListener {
-            if (ConnectionOn().isConnected(this)) {
-                peopleViewModel.getMovieAndPeopleDetails(movieId)
-                movieSimilarViewModel.getMovieSimilar(movieId)
-                binding.connectionOff.layoutConnectionOff.gone()
-                skeletonScreen.show()
-            }
-        }
         setupAdapter()
         setupAdapterPeople()
 

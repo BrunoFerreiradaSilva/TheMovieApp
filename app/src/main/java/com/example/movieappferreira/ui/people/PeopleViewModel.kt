@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieappferreira.data.domain.MovieRepository
 import com.example.movieappferreira.data.domain.PeopleRepository
 import com.example.movieappferreira.model.MovieDetails
@@ -33,7 +34,7 @@ class PeopleViewModel @Inject constructor(
     )
 
     fun getMovieAndPeopleDetails(movieID: Int) {
-        CoroutineScope(Dispatchers.IO).launch(handler) {
+        viewModelScope.launch(handler) {
             val movieDetails = repository.getDetailsMovie(movieID)
             detailsMovieAndPeople.value?.first?.postValue(movieDetails)
 

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieappferreira.data.domain.MovieRepository
 import com.example.movieappferreira.model.MovieSimilar
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -24,14 +25,9 @@ class MovieSimilarViewModel @Inject constructor(private val repository: MovieRep
     private val _movieSimilarDetails = MutableLiveData<MutableList<MovieSimilar>>()
 
     fun getMovieSimilar(movieID: Int) {
-        CoroutineScope(Dispatchers.IO).launch(handler) {
-            try {
-                val movieSimilarDetails = repository.getSimilarMovies(movieID)
-                _movieSimilarDetails.postValue(movieSimilarDetails)
-            } catch (t: Throwable) {
-                return@launch
-            }
-
+        viewModelScope.launch(handler) {
+            val movieSimilarDetails = repository.getSimilarMovies(movieID)
+            _movieSimilarDetails.postValue(movieSimilarDetails)
         }
     }
 }
