@@ -2,7 +2,6 @@ package com.example.movieappferreira.ui.moviessimilar
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -11,12 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.database.MovieRoomViewModel
-import com.example.movieappferreira.database.MovieViewModelFactory
+import com.example.movieappferreira.database.room.RoomViewModel
 import com.example.movieappferreira.extensions.gone
 import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
@@ -39,7 +36,7 @@ class MovieSimilarActivity : AppCompatActivity() {
     lateinit var peopleViewModel: PeopleViewModel
     @Inject
     lateinit var movieSimilarViewModel: MovieSimilarViewModel
-    @Inject lateinit var movieRoomViewModel: MovieRoomViewModel
+    @Inject lateinit var roomViewModel: RoomViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
@@ -86,7 +83,7 @@ class MovieSimilarActivity : AppCompatActivity() {
                 favorite.gone()
                 favoriteDone.visible()
                 if (movieDetails != null) {
-                    movieRoomViewModel.insert(movieDetails)
+                    roomViewModel.insert(movieDetails)
                 }
             }
         }
@@ -98,7 +95,7 @@ class MovieSimilarActivity : AppCompatActivity() {
                 favoriteDone.gone()
                 favorite.visible()
                 if (movieDetails != null) {
-                    movieRoomViewModel.remove(movieDetails.id)
+                    roomViewModel.remove(movieDetails.id)
                 }
             }
         }
@@ -108,7 +105,7 @@ class MovieSimilarActivity : AppCompatActivity() {
         super.onResume()
         peopleViewModel.getMovieAndPeopleDetails(movieId)
         movieSimilarViewModel.getMovieSimilar(movieId)
-        movieRoomViewModel.allPerson.observe(this) {
+        roomViewModel.allPerson.observe(this) {
             for (item in 0 until it.size) {
                 if (movieId == it[item].id) {
                     binding.layoutItemHeader.favoriteDone.visible()

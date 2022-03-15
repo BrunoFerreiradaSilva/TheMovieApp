@@ -1,4 +1,4 @@
-package com.example.movieappferreira.rest.repository
+package com.example.movieappferreira.database.room
 
 import androidx.annotation.WorkerThread
 import com.example.movieappferreira.database.MovieDAO
@@ -6,7 +6,7 @@ import com.example.movieappferreira.model.MovieDetails
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieRoomRepository @Inject constructor(private val movieDAO: MovieDAO) {
+class RoomRepository @Inject constructor(private val movieDAO: MovieDAO) {
     val allPerson: Flow<MutableList<MovieDetails>> = movieDAO.getAllPerson()
 
     @Suppress("RedundantSuspendModifier")

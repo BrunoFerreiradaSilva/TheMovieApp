@@ -8,16 +8,13 @@ import com.example.movieappferreira.data.repository.MovieRepositoryImp
 import com.example.movieappferreira.data.repository.PeopleRepositoryImp
 import com.example.movieappferreira.database.MovieDAO
 import com.example.movieappferreira.database.MovieDataBase
-import com.example.movieappferreira.model.Movie
-import com.example.movieappferreira.rest.repository.MovieRoomRepository
+import com.example.movieappferreira.database.room.RoomRepository
 import com.example.movieappferreira.rest.service.MovieService
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -57,8 +54,8 @@ class Module {
     }
 
     @Provides
-    fun providesRepository(movieDAO: MovieDAO):MovieRoomRepository{
-       return MovieRoomRepository(movieDAO)
+    fun providesRepository(movieDAO: MovieDAO): RoomRepository {
+       return RoomRepository(movieDAO)
     }
 
 }

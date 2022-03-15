@@ -1,15 +1,15 @@
-package com.example.movieappferreira.database
+package com.example.movieappferreira.database.room
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.movieappferreira.database.room.RoomRepository
 import com.example.movieappferreira.model.MovieDetails
-import com.example.movieappferreira.rest.repository.MovieRoomRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MovieRoomViewModel @Inject constructor(private val repository: MovieRoomRepository) :
+class RoomViewModel @Inject constructor(private val repository: RoomRepository) :
     ViewModel() {
     val allPerson: LiveData<MutableList<MovieDetails>> = repository.allPerson.asLiveData()
 

@@ -14,18 +14,6 @@ abstract class MovieDataBase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDAO
 
-    private class MovieCallBack(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let {
-                scope.launch {
-                }
-            }
-        }
-    }
-
     companion object {
         @Volatile
         private var INSTANCE: MovieDataBase? = null

@@ -1,15 +1,11 @@
 package com.example.movieappferreira.ui.home
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieappferreira.application.MovieApplication
-import com.example.movieappferreira.database.MovieRoomViewModel
-import com.example.movieappferreira.database.MovieViewModelFactory
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView

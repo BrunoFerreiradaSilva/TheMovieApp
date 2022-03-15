@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
-import com.example.movieappferreira.database.MovieRoomViewModel
-import com.example.movieappferreira.database.MovieViewModelFactory
+import com.example.movieappferreira.database.room.RoomViewModel
 import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.ui.home.HomeActivity
@@ -30,7 +27,7 @@ class FavoriteFragment : Fragment() {
     private val favoriteAdapter: FavoriteAdapter by lazy {
         FavoriteAdapter(requireContext(), listMovie, getMovieItemClickListener())
     }
-    @Inject lateinit var movieRoomViewModel: MovieRoomViewModel
+    @Inject lateinit var roomViewModel: RoomViewModel
     private val listMovie = mutableListOf<MovieDetails>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +50,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getAllFavorites() {
-        movieRoomViewModel.allPerson.observe(viewLifecycleOwner) {
+        roomViewModel.allPerson.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 binding.layoutNoHaveMovie.visible()
             } else {
