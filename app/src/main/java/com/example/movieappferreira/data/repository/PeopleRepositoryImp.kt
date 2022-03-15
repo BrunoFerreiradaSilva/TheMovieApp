@@ -2,12 +2,13 @@ package com.example.movieappferreira.data.repository
 
 import com.example.movieappferreira.data.domain.PeopleRepository
 import com.example.movieappferreira.model.People
-import com.example.movieappferreira.rest.retrofit.RetrofitInitializer
+import com.example.movieappferreira.rest.service.MovieService
+import javax.inject.Inject
 
-class PeopleRepositoryImp : PeopleRepository {
+class PeopleRepositoryImp @Inject constructor(private val movieService: MovieService) : PeopleRepository {
     override suspend fun getPeopleDetails(peopleID: Int): People? {
         return try {
-            RetrofitInitializer.movieService.getPeopleDetails(peopleID)
+            movieService.getPeopleDetails(peopleID)
         } catch (e: RuntimeException) {
             null
         }
@@ -15,7 +16,7 @@ class PeopleRepositoryImp : PeopleRepository {
 
     override suspend fun getPeopleMovieList(movieID: Int): MutableList<People> {
         return try {
-            RetrofitInitializer.movieService.getPeopleMovie(movieID).cast
+            movieService.getPeopleMovie(movieID).cast
         } catch (e: RuntimeException) {
             mutableListOf()
         }

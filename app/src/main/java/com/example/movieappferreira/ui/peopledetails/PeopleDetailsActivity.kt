@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
 import com.example.movieappferreira.base.Constants
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
-import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPeopleDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class PeopleDetailsActivity : AppCompatActivity() {
-    @Inject lateinit var peopleViewModel: PeopleDetailsViewModel
+    @Inject
+    lateinit var peopleViewModel: PeopleDetailsViewModel
     private lateinit var binding: ActivityPeopleDetailsBinding
     private lateinit var skeletonScreen: SkeletonScreen
 

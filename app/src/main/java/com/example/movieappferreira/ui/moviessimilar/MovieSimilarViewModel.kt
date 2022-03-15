@@ -12,7 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MovieSimilarViewModel @Inject constructor(private val repository: MovieRepository): ViewModel() {
+class MovieSimilarViewModel @Inject constructor(private val repository: MovieRepository) :
+    ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("Network", "Caught $exception")
@@ -27,7 +28,7 @@ class MovieSimilarViewModel @Inject constructor(private val repository: MovieRep
             try {
                 val movieSimilarDetails = repository.getSimilarMovies(movieID)
                 _movieSimilarDetails.postValue(movieSimilarDetails)
-            }catch (t:Throwable){
+            } catch (t: Throwable) {
                 return@launch
             }
 

@@ -2,35 +2,28 @@ package com.example.movieappferreira.ui.moviessimilar
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ethanhua.skeleton.Skeleton
 import com.ethanhua.skeleton.SkeletonScreen
-import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
-import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.base.Constants.ID_MOVIE
 import com.example.movieappferreira.base.Constants.PATH_IMAGE
+import com.example.movieappferreira.database.room.RoomViewModel
 import com.example.movieappferreira.extensions.gone
 import com.example.movieappferreira.extensions.visible
-import com.example.movieappferreira.utils.MovieClickListener
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.model.MovieSimilar
 import com.example.movieappferreira.model.People
 import com.example.movieappferreira.rest.service.ConnectionOn
-import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
-import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
 import com.example.movieappferreira.ui.people.PeopleAdapter
+import com.example.movieappferreira.ui.people.PeopleViewModel
 import com.example.movieappferreira.ui.peopledetails.PeopleDetailsActivity
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMovieSimilarBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,18 +32,18 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MovieSimilarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieSimilarBinding
-    @Inject lateinit var peopleViewModel: PeopleViewModel
-    @Inject lateinit var movieSimilarViewModel: MovieSimilarViewModel
+    @Inject
+    lateinit var peopleViewModel: PeopleViewModel
+    @Inject
+    lateinit var movieSimilarViewModel: MovieSimilarViewModel
+    @Inject lateinit var roomViewModel: RoomViewModel
     private val movieSimilarList = mutableListOf<MovieSimilar>()
     private val peopleList = mutableListOf<People>()
     private lateinit var skeletonScreen: SkeletonScreen
-    private val peopleAdapter: PeopleAdapter = PeopleAdapter(this,peopleList,getPeopleDetails())
+    private val peopleAdapter: PeopleAdapter = PeopleAdapter(this, peopleList, getPeopleDetails())
     private val movieSimilarAdapter: MovieSimilarAdapter =
         MovieSimilarAdapter(movieSimilarList, this, onClickItemMovieSimilar())
     private var movieId = 0
-    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
-        MovieViewModelFactory((application as MovieApplication).repository)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +75,6 @@ class MovieSimilarActivity : AppCompatActivity() {
         setupAdapterPeople()
 
 
-
     }
 
     private fun favoriteMovie(movieDetails: MovieDetails?) {
@@ -91,7 +83,7 @@ class MovieSimilarActivity : AppCompatActivity() {
                 favorite.gone()
                 favoriteDone.visible()
                 if (movieDetails != null) {
-                    movieRoomViewModel.insert(movieDetails)
+                    roomViewModel.insert(movieDetails)
                 }
             }
         }
@@ -103,7 +95,7 @@ class MovieSimilarActivity : AppCompatActivity() {
                 favoriteDone.gone()
                 favorite.visible()
                 if (movieDetails != null) {
-                    movieRoomViewModel.remove(movieDetails.id)
+                    roomViewModel.remove(movieDetails.id)
                 }
             }
         }
@@ -113,9 +105,9 @@ class MovieSimilarActivity : AppCompatActivity() {
         super.onResume()
         peopleViewModel.getMovieAndPeopleDetails(movieId)
         movieSimilarViewModel.getMovieSimilar(movieId)
-        movieRoomViewModel.allPerson.observe(this){
-            for(item in 0 until  it.size){
-                if(movieId == it[item].id){
+        roomViewModel.allPerson.observe(this) {
+            for (item in 0 until it.size) {
+                if (movieId == it[item].id) {
                     binding.layoutItemHeader.favoriteDone.visible()
                 }
             }
@@ -150,7 +142,7 @@ class MovieSimilarActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun setupInformation(movieDetails: MovieDetails?){
+    private fun setupInformation(movieDetails: MovieDetails?) {
         binding.layoutItemHeader.imageHeaderRecyclerSimilar.load(PATH_IMAGE + movieDetails?.backdrop_path)
         binding.layoutItemHeader.nameMovieHeaderRecycler.text = movieDetails?.overview
         setupToolbar(movieDetails)
@@ -176,9 +168,10 @@ class MovieSimilarActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAdapterPeople(){
+    private fun setupAdapterPeople() {
         binding.recyclerPeople.apply {
-            layoutManager = LinearLayoutManager(this@MovieSimilarActivity,RecyclerView.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(this@MovieSimilarActivity, RecyclerView.HORIZONTAL, false)
             adapter = peopleAdapter
         }
     }

@@ -5,33 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.movieappferreira.application.MovieApplication
 import com.example.movieappferreira.base.Constants
-import com.example.movieappferreira.extensions.gone
+import com.example.movieappferreira.database.room.RoomViewModel
 import com.example.movieappferreira.extensions.visible
 import com.example.movieappferreira.model.MovieDetails
 import com.example.movieappferreira.ui.home.HomeActivity
-import com.example.movieappferreira.ui.moviecomplete.MovieRoomViewModel
-import com.example.movieappferreira.ui.moviecomplete.MovieViewModelFactory
 import com.example.movieappferreira.ui.moviessimilar.MovieSimilarActivity
 import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDashboardBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val favoriteAdapter: FavoriteAdapter by lazy {
-        FavoriteAdapter(requireContext(),listMovie,getMovieItemClickListener())
+        FavoriteAdapter(requireContext(), listMovie, getMovieItemClickListener())
     }
-    private val movieRoomViewModel: MovieRoomViewModel by viewModels {
-        MovieViewModelFactory((activity?.application as MovieApplication).repository)
-    }
+    @Inject lateinit var roomViewModel: RoomViewModel
     private val listMovie = mutableListOf<MovieDetails>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +37,7 @@ class FavoriteFragment : Fragment() {
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as HomeActivity).setToolbar(getString(R.string.favorites_title))
@@ -53,7 +50,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getAllFavorites() {
-        movieRoomViewModel.allPerson.observe(viewLifecycleOwner) {
+        roomViewModel.allPerson.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 binding.layoutNoHaveMovie.visible()
             } else {
@@ -62,10 +59,6 @@ class FavoriteFragment : Fragment() {
                 favoriteAdapter.submitList(it)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun getMovieItemClickListener(): MovieClickListener {

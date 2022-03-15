@@ -11,7 +11,7 @@ data class MovieDetails(
     @ColumnInfo(name = "movie_details")
     val id: Int,
     val backdrop_path: String,
-    val poster_path:String,
+    val poster_path: String,
     val budget: String,
     val overview: String,
     val original_title: String,

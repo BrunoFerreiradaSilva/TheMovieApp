@@ -3,7 +3,6 @@ package com.example.movieappferreira.ui.favorites
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -16,10 +15,13 @@ import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBin
 class FavoriteAdapter(
     private val context: Context,
     private val listMovies: MutableList<MovieDetails>?,
-    private val listener:MovieClickListener
+    private val listener: MovieClickListener
 ) :
-    ListAdapter<MovieDetails,FavoriteAdapter.ItemRecycler>(BaseItemCallback<MovieDetails>()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteAdapter.ItemRecycler {
+    ListAdapter<MovieDetails, FavoriteAdapter.ItemRecycler>(BaseItemCallback<MovieDetails>()) {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): FavoriteAdapter.ItemRecycler {
         val layoutInflater = LayoutInflater.from(context)
         val recyclerItemMoviePopularCompleteBinding: RecyclerItemMoviePopularCompleteBinding =
             RecyclerItemMoviePopularCompleteBinding.inflate(layoutInflater, parent, false)

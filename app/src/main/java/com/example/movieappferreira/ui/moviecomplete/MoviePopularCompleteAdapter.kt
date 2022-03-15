@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.movieappferreira.base.ImageDownload
-import com.example.movieappferreira.utils.MovieClickListener
+import com.example.movieappferreira.base.Constants.PATH_IMAGE
 import com.example.movieappferreira.model.MoviePopular
 import com.example.movieappferreira.utils.BaseItemCallback
+import com.example.movieappferreira.utils.MovieClickListener
 import com.example.myapplication.databinding.RecyclerItemMoviePopularCompleteBinding
 
 class MoviePopularCompleteAdapter(
@@ -32,13 +32,7 @@ class MoviePopularCompleteAdapter(
     inner class TypeItem(private val recyclerItemPeopleBinding: RecyclerItemMoviePopularCompleteBinding) :
         RecyclerView.ViewHolder(recyclerItemPeopleBinding.root) {
         fun binding(moviePopular: MoviePopular) {
-            val request = ImageDownload.download(
-                context,
-                moviePopular,
-                recyclerItemPeopleBinding.posterPopularCompleteMovie
-            )
-            val fileName = request.data.toString()
-            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(fileName)
+            recyclerItemPeopleBinding.posterPopularCompleteMovie.load(PATH_IMAGE + moviePopular.poster_path)
         }
     }
 

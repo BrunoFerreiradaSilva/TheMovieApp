@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">The Movie</string>
     <string name="title_movie">Popular movies</string>
     <string name="title_search">Favorites</string>
     <string name="title_profile">Profile</string>
@@ -51,5 +51,8 @@
     <string name="favorites_title">Favorites</string>
     <string name="similar_movie">Similar movie</string>
     <string name="cast">Cast</string>
+    <string name="no_have_favorite">Opa, Não tem favorito não, mas fique tranquilo(a), ele aparecerá quando você favoritar algo ;)</string>
+    <string name="name_people">name people</string>
+    <string name="overview">Overview</string>
 
 </resources>

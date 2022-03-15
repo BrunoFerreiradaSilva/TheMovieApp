@@ -1,9 +1,11 @@
 package com.example.movieappferreira.database
 
-import androidx.room.*
-import com.example.movieappferreira.model.Movie
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.movieappferreira.model.MovieDetails
-import com.example.movieappferreira.model.MoviePopular
+import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,6 +17,6 @@ interface MovieDAO {
     suspend fun insertMovie(movieDetails: MovieDetails)
 
     @Query("DELETE from table_movie WHERE movie_details = :movieId")
-    suspend fun removeMovie(movieId:Int)
+    suspend fun removeMovie(movieId: Int)
 
 }
